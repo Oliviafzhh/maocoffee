@@ -9,17 +9,27 @@
 
         <div class="flex flex-col items-center gap-10 self-stretch">
 
-            <!-- kategori -->
+            <!-- KATEGORI: Food, Drink, DAN SNACK (Sudah Ditambahkan) -->
             <div class="flex items-center gap-6">
+                <!-- Food -->
                 <a href="#" 
                    data-category="Food"
                    class="menu-category flex justify-center items-center py-2 px-6 text-center font-poppins text-base font-normal leading-normal tracking-[-0.32px] {{ $kategoriAktif == 'Food' ? 'rounded-[29.878px] bg-[#2E4239] text-white' : 'text-[#51615A]' }}">
-                    Food
+                   Food
                 </a>
+
+                <!-- Drink -->
                 <a href="#" 
                    data-category="Drink"
                    class="menu-category flex justify-center items-center py-2 px-6 text-center font-poppins text-base font-normal leading-normal tracking-[-0.32px] {{ $kategoriAktif == 'Drink' ? 'rounded-[29.878px] bg-[#2E4239] text-white' : 'text-[#51615A]' }}">
-                    Drink
+                   Drink
+                </a>
+
+                <!-- Snack (BARU DITAMBAHKAN) -->
+                <a href="#" 
+                   data-category="Snack"
+                   class="menu-category flex justify-center items-center py-2 px-6 text-center font-poppins text-base font-normal leading-normal tracking-[-0.32px] {{ $kategoriAktif == 'Snack' ? 'rounded-[29.878px] bg-[#2E4239] text-white' : 'text-[#51615A]' }}">
+                   Snack
                 </a>
             </div>
 
@@ -103,15 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (linkCategory === category) {
                         link.classList.add('rounded-[29.878px]', 'text-white');
                         link.classList.remove('text-[#51615A]');
-                        // Tambahkan inline style untuk background
+                        // Tambahkan inline style untuk background dan warna teks
                         link.style.backgroundColor = '#2E4239';
                         link.style.borderRadius = '29.878px';
+                        link.style.color = '#ffffff'; 
                     } else {
                         link.classList.remove('rounded-[29.878px]', 'text-white');
                         link.classList.add('text-[#51615A]');
                         // Hapus inline style
                         link.style.backgroundColor = '';
                         link.style.borderRadius = '';
+                        link.style.color = ''; 
                     }
                 });
             })

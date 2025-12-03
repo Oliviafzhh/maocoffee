@@ -1,75 +1,111 @@
 @extends('layouts.auth')
 
 @section('auth-content')
-<div class="flex items-stretch gap-2 p-4 h-screen">
-    <!-- section welcome -->
-    <div class="flex flex-col justify-center items-center gap-8 p-6 flex-1 self-stretch bg-[#2E4239] rounded-[40px] h-full">
-        <div class="flex flex-col items-center gap-4 w-[400px]">
-            <div class="text-7xl font-medium text-center text-white leading-[120%] tracking-[-2.88px] w-full">Hello Welcome</div>
-            <div class="text-2xl font-normal text-center text-white leading-[120%] tracking-[-0.96px] w-full">If You Don't Have an Account Please Sign Up</div>
+<div class="flex items-stretch gap-4 p-6 h-screen">
+
+    <!-- LEFT PANEL (WELCOME) -->
+    <div class="flex flex-col justify-center items-center gap-10 flex-1 bg-[#2E4239] rounded-[40px] h-full p-10 shadow-xl">
+
+        <div class="flex flex-col items-center gap-4 max-w-md">
+            <h1 class="text-7xl font-semibold text-white leading-[110%] tracking-tight text-center">
+                Hello<br>Welcome
+            </h1>
+
+            <p class="text-2xl font-light text-white opacity-90 text-center tracking-tight">
+                If you don’t have an account, please sign up
+            </p>
         </div>
-        <div class="w-fit flex justify-center items-center border border-white rounded-2xl px-6 py-3 text-white text-center text-2xl font-normal leading-[120%] tracking-[-0.96px]">
-            <a href="{{ route('signup') }}">Sign Up</a>
-        </div>
+
+        <a href="{{ route('signup') }}"
+           class="px-10 py-4 border border-white rounded-2xl text-white text-2xl font-medium hover:bg-white hover:text-[#2E4239] transition-all duration-200 shadow-lg">
+            Sign Up
+        </a>
     </div>
 
-    <!-- section form -->
-    <div class="flex flex-col justify-center items-center gap-10 self-stretch flex-1 w-full h-full">
-        <div class="flex flex-col items-center justify-center gap-12 w-full max-w-2xl">
-            <div class="flex flex-col items-center gap-4">
-                 <img src="{{ asset('image/LOGO.png') }}" alt="">
-                <div class="w-[362px] text-[#212121] text-5xl text-center font-semibold leading-[120%] tracking-[-1.92px]">Make Your Journey Better</div>
-            </div>  
+    <!-- RIGHT PANEL (LOGIN FORM) -->
+    <div class="flex flex-col justify-center items-center flex-1 px-10">
 
-            <!-- Tampilkan pesan sukses jika ada -->
+        <div class="flex flex-col items-center gap-10 w-full max-w-xl">
+
+            <!-- LOGO + TITLE -->
+            <div class="flex flex-col items-center gap-4">
+                <img src="{{ asset('image/LOGO.png') }}" alt="" class="w-40 drop-shadow-lg">
+                <h2 class="text-5xl font-semibold text-[#212121] tracking-tight text-center">
+                    Make Your Journey Better
+                </h2>
+            </div>
+
+            <!-- SUCCESS MESSAGE -->
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative w-full" role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
+                <div class="w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl shadow-sm">
+                    {{ session('success') }}
                 </div>
             @endif
 
-            <!-- Login Form -->
-            <form action="{{ route('login.process') }}" method="POST" class="flex flex-col items-start gap-12 w-full">
+            <!-- LOGIN FORM -->
+            <form action="{{ route('login.process') }}" method="POST"
+                  class="flex flex-col gap-10 w-full">
                 @csrf
-                <div class="flex flex-col items-start gap-8 w-full">
-                    <!-- Email Field -->
-                    <div class="flex flex-col items-start self-stretch gap-2 w-full">
-                        <label for="email" class="text-[#212121] text-2xl font-normal leading-[120%] tracking-[-0.64px]">Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="Enter your Email" 
-                               class="w-full h-16 flex px-6 justify-center items-start self-stretch bg-[#F2F2F2] rounded-4xl @error('email') border border-red-500 @enderror">
+
+                <!-- INPUT FIELDS -->
+                <div class="flex flex-col gap-6">
+
+                    <!-- Email -->
+                    <div class="flex flex-col gap-2">
+                        <label for="email" class="text-2xl text-[#212121] font-medium tracking-tight">
+                            Email
+                        </label>
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                               placeholder="Enter your Email"
+                               class="w-full h-16 px-6 bg-[#F2F2F2] rounded-3xl shadow-sm focus:ring-2 focus:ring-[#2E4239] outline-none
+                               @error('email') border border-red-500 @enderror">
                         @error('email')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Password Field -->
-                    <div class="flex flex-col items-start self-stretch gap-2 w-full">
-                        <label for="password" class="text-[#212121] text-2xl font-normal leading-[120%] tracking-[-0.64px]">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Enter your Password" 
-                               class="w-full h-16 flex px-6 justify-center items-start self-stretch bg-[#F2F2F2] rounded-4xl @error('password') border border-red-500 @enderror">
+                    <!-- Password -->
+                    <div class="flex flex-col gap-2">
+                        <label for="password" class="text-2xl text-[#212121] font-medium tracking-tight">
+                            Password
+                        </label>
+                        <input type="password" name="password" id="password"
+                               placeholder="Enter your Password"
+                               class="w-full h-16 px-6 bg-[#F2F2F2] rounded-3xl shadow-sm focus:ring-2 focus:ring-[#2E4239] outline-none
+                               @error('password') border border-red-500 @enderror">
                         @error('password')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
+
                 </div>
 
-                <!-- Tampilkan error umum -->
+                <!-- COMMON ERROR -->
                 @if($errors->has('email'))
-                    <div class="text-red-500 text-sm w-full text-center">
+                    <div class="text-red-500 text-sm text-center">
                         {{ $errors->first('email') }}
                     </div>
                 @endif
 
-                <button type="submit" class="flex w-full justify-center py-4 bg-[#2E4239] text-2xl font-normal text-center text-white leading-[120%] tracking-[-0.96px] rounded-2xl hover:bg-[#1a2a22] transition duration-200">
+                <!-- LOGIN BUTTON -->
+                <button type="submit"
+                        class="w-full py-4 bg-[#2E4239] text-white text-2xl rounded-2xl font-medium tracking-tight
+                        hover:bg-[#23362f] transition-all duration-200 shadow-md">
                     Login
                 </button>
+
             </form>
 
-            <div class="text-2xl font-normal text-center text-[#212121] leading-[120%] tracking-[-0.96px]">
-                Don't Have an Account? 
-                <a href="{{ route('signup') }}" class="text-2xl font-semibold text-[#212121] leading-[120%] tracking-[-0.54px] hover:underline">Sign Up First</a>
-            </div>
+            <!-- SIGN UP LINK -->
+            <p class="text-2xl text-[#212121] font-normal tracking-tight">
+                Don’t have an account?
+                <a href="{{ route('signup') }}"
+                   class="font-semibold underline hover:text-[#2E4239] transition">
+                    Sign Up First
+                </a>
+            </p>
         </div>
+
     </div>
 </div>
 @endsection
