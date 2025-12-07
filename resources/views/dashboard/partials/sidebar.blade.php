@@ -64,15 +64,6 @@
             </p>
             <ul class="space-y-1">
 
-                <li>
-                    <a href="{{ route('dashboard.about.index') }}"
-                        class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group">
-                        <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-[#D4B3AA] group-hover:bg-[#D4B3AA] group-hover:text-[#2E4239] transition-colors duration-300 mr-3 shadow-sm">
-                            <i class="fas fa-image text-xs"></i>
-                        </span>
-                        <span class="font-medium text-sm tracking-wide">About</span>
-                    </a>
-                </li>
 
                 <li>
                     <a href="{{ route('dashboard.paket.index') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group">
