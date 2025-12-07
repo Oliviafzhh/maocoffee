@@ -65,37 +65,47 @@ class konfigurasicontroller extends Controller
 
         $konfigurasi = konfigurasi_web::findOrFail($id);
 
-        // Update logo jika ada file baru
+        // ================= LOGO =================
         if ($request->hasFile('logo_web')) {
-            // Hapus logo lama
-            if ($konfigurasi->logo_web) {
+
+            // ✅ HAPUS FILE LAMA HANYA JIKA DIA ADA DI STORAGE
+            if ($konfigurasi->logo_web && str_starts_with($konfigurasi->logo_web, 'konfigurasi/')) {
                 Storage::disk('public')->delete($konfigurasi->logo_web);
             }
-            $konfigurasi->logo_web = $request->file('logo_web')->store('konfigurasi', 'public');
+
+            $konfigurasi->logo_web = $request->file('logo_web')
+                ->store('konfigurasi', 'public');
         }
 
-        // Update card1 image jika ada file baru
+        // ================= CARD 1 =================
         if ($request->hasFile('img_card1')) {
-            if ($konfigurasi->img_card1) {
+
+            if ($konfigurasi->img_card1 && str_starts_with($konfigurasi->img_card1, 'konfigurasi/')) {
                 Storage::disk('public')->delete($konfigurasi->img_card1);
             }
-            $konfigurasi->img_card1 = $request->file('img_card1')->store('konfigurasi', 'public');
+
+            $konfigurasi->img_card1 = $request->file('img_card1')
+                ->store('konfigurasi', 'public');
         }
 
-        // Update card2 image jika ada file baru
+        // ================= CARD 2 =================
         if ($request->hasFile('img_card2')) {
-            if ($konfigurasi->img_card2) {
+
+            if ($konfigurasi->img_card2 && str_starts_with($konfigurasi->img_card2, 'konfigurasi/')) {
                 Storage::disk('public')->delete($konfigurasi->img_card2);
             }
-            $konfigurasi->img_card2 = $request->file('img_card2')->store('konfigurasi', 'public');
+
+            $konfigurasi->img_card2 = $request->file('img_card2')
+                ->store('konfigurasi', 'public');
         }
 
-        // Update text fields
+        // ================= TEXT =================
         $konfigurasi->nama_card1 = $request->nama_card1;
         $konfigurasi->nama_card2 = $request->nama_card2;
 
         $konfigurasi->save();
 
-        return redirect()->route('dashboard')->with('success', 'Konfigurasi web berhasil diupdate.');
+        return redirect()->route('dashboard')
+            ->with('success', 'Konfigurasi web berhasil diupdate.');
     }
 }

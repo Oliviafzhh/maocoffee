@@ -2,10 +2,24 @@
 
 @section('page-title', 'Edit Menu')
 
+@php
+function menuImage($path) {
+    if (!$path) return asset('image/no-image.png');
+
+    // Kalau file ada di storage → pakai storage
+    if (file_exists(public_path('storage/' . $path))) {
+        return asset('storage/' . $path);
+    }
+
+    // Kalau tidak ada → fallback ke public (seeder)
+    return asset($path);
+}
+@endphp
+
 @section('dashboard-content')
 <div class="p-8 bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto">
-        
+
         <!-- Header Page -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-200 pb-6">
             <div>
@@ -15,19 +29,19 @@
         </div>
 
         @if($errors->any())
-            <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex items-start gap-3 shadow-sm animate-fade-in">
-                <div class="bg-red-100 p-2 rounded-full text-red-600 shrink-0">
-                    <i class="fas fa-exclamation-triangle text-sm"></i>
-                </div>
-                <div>
-                    <h3 class="text-red-800 font-semibold text-sm">Terdapat kesalahan input</h3>
-                    <ul class="list-disc list-inside text-red-600 text-xs mt-1 space-y-1">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex items-start gap-3 shadow-sm animate-fade-in">
+            <div class="bg-red-100 p-2 rounded-full text-red-600 shrink-0">
+                <i class="fas fa-exclamation-triangle text-sm"></i>
             </div>
+            <div>
+                <h3 class="text-red-800 font-semibold text-sm">Terdapat kesalahan input</h3>
+                <ul class="list-disc list-inside text-red-600 text-xs mt-1 space-y-1">
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
         @endif
 
         <form id="menuForm" action="{{ route('dashboard.menu.update', $menu->id_menu) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
@@ -44,13 +58,13 @@
                 </div>
 
                 <div class="p-6 md:p-8 space-y-8">
-                    
+
                     <!-- Row 1: Nama Menu & Kategori -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Nama Menu -->
                         <div class="space-y-2">
                             <label class="block text-sm font-semibold text-gray-700">Nama Menu <span class="text-red-500">*</span></label>
-                            <input type="text" name="nama_menu" value="{{ old('nama_menu', $menu->nama_menu) }}" 
+                            <input type="text" name="nama_menu" value="{{ old('nama_menu', $menu->nama_menu) }}"
                                 class="w-full px-4 py-3.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-800 shadow-sm focus:shadow-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4239]/20 focus:border-[#2E4239] transition-all placeholder-gray-400"
                                 placeholder="Contoh: Nasi Goreng Spesial" required>
                         </div>
@@ -59,7 +73,7 @@
                         <div class="space-y-2">
                             <label class="block text-sm font-semibold text-gray-700">Kategori <span class="text-red-500">*</span></label>
                             <div class="relative">
-                                <select name="kategori" 
+                                <select name="kategori"
                                     class="w-full px-4 py-3.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-800 shadow-sm focus:shadow-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4239]/20 focus:border-[#2E4239] transition-all appearance-none cursor-pointer" required>
                                     <option value="Food" {{ old('kategori', $menu->kategori) == 'Food' ? 'selected' : '' }}>Makanan (Food)</option>
                                     <option value="Drink" {{ old('kategori', $menu->kategori) == 'Drink' ? 'selected' : '' }}>Minuman (Drink)</option>
@@ -82,7 +96,7 @@
                                 <div class="px-4 py-3.5 bg-gray-100 border-r border-gray-200 text-gray-500 font-bold text-sm group-focus-within:bg-[#2E4239] group-focus-within:text-white group-focus-within:border-[#2E4239] transition-all">
                                     Rp
                                 </div>
-                                <input type="number" name="harga" value="{{ old('harga', $menu->harga) }}" 
+                                <input type="number" name="harga" value="{{ old('harga', $menu->harga) }}"
                                     class="w-full px-4 py-3.5 bg-transparent border-none focus:ring-0 text-gray-800 placeholder-gray-400"
                                     placeholder="0" min="0" required>
                             </div>
@@ -91,7 +105,7 @@
                         <!-- Stok -->
                         <div class="space-y-2">
                             <label class="block text-sm font-semibold text-gray-700">Stok <span class="text-red-500">*</span></label>
-                            <input type="number" name="stok" value="{{ old('stok', $menu->stok) }}" 
+                            <input type="number" name="stok" value="{{ old('stok', $menu->stok) }}"
                                 class="w-full px-4 py-3.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-800 shadow-sm focus:shadow-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4239]/20 focus:border-[#2E4239] transition-all"
                                 placeholder="0" min="0" required>
                         </div>
@@ -114,7 +128,10 @@
                             </label>
                             <!-- Container Besar -->
                             <div class="w-full h-96 bg-gray-50 border-2 border-gray-200 rounded-2xl flex items-center justify-center overflow-hidden p-4 shadow-sm relative group">
-                                <img src="{{ asset('storage/' . $menu->img_menu) }}" alt="Current Image" class="w-full h-full object-contain rounded-lg transition-transform duration-500 group-hover:scale-105">
+                                <img
+                                    src="{{ menuImage($menu->img_menu) }}"
+                                    class="w-16 h-16 object-cover rounded-lg">
+
                                 <div class="absolute inset-0 bg-black/5 rounded-2xl pointer-events-none border border-black/5"></div>
                             </div>
                         </div>
@@ -124,11 +141,11 @@
                             <label class="block text-base font-bold text-gray-800 flex items-center gap-2">
                                 <i class="fas fa-cloud-upload-alt text-[#2E4239]"></i> Ganti Gambar (Opsional)
                             </label>
-                            
+
                             <div class="relative group">
                                 <!-- Area Upload -->
                                 <label for="img_menu" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-[#2E4239]/30 rounded-2xl cursor-pointer bg-[#2E4239]/5 hover:bg-[#2E4239]/10 transition-all duration-300 relative overflow-hidden group-hover:border-[#2E4239]/60">
-                                    
+
                                     <!-- Placeholder Content -->
                                     <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center z-10 transition-opacity duration-300" id="upload-placeholder">
                                         <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform duration-300">
@@ -161,14 +178,14 @@
             <!-- Action Buttons (Besar dan Mantap) -->
             <div class="flex flex-col sm:flex-row justify-end gap-4 pt-4 border-t border-gray-200">
                 <!-- Tombol Kembali -->
-                <a href="{{ route('dashboard.menu.index') }}" 
-                   class="inline-flex justify-center items-center px-8 py-4 border border-gray-300 shadow-sm text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all w-full sm:w-auto hover:shadow-md">
+                <a href="{{ route('dashboard.menu.index') }}"
+                    class="inline-flex justify-center items-center px-8 py-4 border border-gray-300 shadow-sm text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all w-full sm:w-auto hover:shadow-md">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
                 </a>
-                
+
                 <!-- TOMBOL UPDATE: Diperbesar & Bayangan Mewah -->
-                <button type="submit" 
-                        class="inline-flex justify-center items-center px-12 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-[#2E4239] hover:bg-[#1a2a22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E4239] transition-all transform hover:-translate-y-1 w-full sm:w-auto shadow-[0_10px_20px_-10px_rgba(46,66,57,0.6)] hover:shadow-[0_20px_30px_-5px_rgba(46,66,57,0.5)]">
+                <button type="submit"
+                    class="inline-flex justify-center items-center px-12 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-[#2E4239] hover:bg-[#1a2a22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E4239] transition-all transform hover:-translate-y-1 w-full sm:w-auto shadow-[0_10px_20px_-10px_rgba(46,66,57,0.6)] hover:shadow-[0_20px_30px_-5px_rgba(46,66,57,0.5)]">
                     <i class="fas fa-save mr-2"></i> Update Menu
                 </button>
             </div>
@@ -199,9 +216,17 @@
 
 <style>
     @keyframes bounce-short {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
     }
+
     .animate-bounce-short {
         animation: bounce-short 0.5s ease-in-out 1;
     }

@@ -2,6 +2,25 @@
 
 @section('page-title', 'Manajemen Paket')
 
+@php
+use Illuminate\Support\Str;
+
+function menuImage($path) {
+    if (!$path) {
+        return asset('image/no-image.png');
+    }
+
+    // Jika sudah hasil upload (storage)
+    if (Str::startsWith($path, 'storage/')) {
+        return asset($path);
+    }
+
+    // ambil dari public/image/menu (seeder)
+    return asset('image/menu/' . $path);
+}
+@endphp
+
+
 @section('dashboard-content')
 <div class="p-6">
     <div class="bg-white rounded-lg shadow-md p-6">
@@ -11,19 +30,19 @@
                 <h2 class="text-2xl font-semibold text-gray-800">Manajemen Paket</h2>
                 <p class="text-gray-600">Kelola paket makanan dan minuman</p>
             </div>
-            
+
             <!-- Tombol Tambah Paket -->
-            <a href="{{ route('dashboard.paket.create') }}" 
-               class="bg-[#2E4239] hover:bg-[#1a2a22] text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 whitespace-nowrap">
+            <a href="{{ route('dashboard.paket.create') }}"
+                class="bg-[#2E4239] hover:bg-[#1a2a22] text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 whitespace-nowrap">
                 <i class="fas fa-plus"></i>
                 Tambah Paket
             </a>
         </div>
 
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                {{ session('success') }}
-            </div>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            {{ session('success') }}
+        </div>
         @endif
 
         <!-- Tabel Paket -->
@@ -43,9 +62,10 @@
                     @forelse($pakets as $paket)
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-3">
-                            <img src="{{ asset('storage/' . $paket->image_paket) }}" 
-                                 alt="{{ $paket->nama_paket }}" 
-                                 class="w-16 h-16 object-cover rounded-lg">
+                            <img
+                                src="{{ menuImage($paket->img_paket) }}"
+                                class="w-16 h-16 object-cover rounded-lg">
+
                         </td>
                         <td class="px-4 py-3">
                             <span class="text-sm text-gray-600">#{{ $paket->id_paket }}</span>
@@ -61,16 +81,16 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
-                                <a href="{{ route('dashboard.paket.edit', $paket->id_paket) }}" 
-                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition duration-200">
+                                <a href="{{ route('dashboard.paket.edit', $paket->id_paket) }}"
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition duration-200">
                                     <i class="fas fa-edit mr-1"></i> Edit
                                 </a>
-                                <form action="{{ route('dashboard.paket.destroy', $paket->id_paket) }}" method="POST" 
-                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus paket ini?')">
+                                <form action="{{ route('dashboard.paket.destroy', $paket->id_paket) }}" method="POST"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus paket ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200">
+                                    <button type="submit"
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200">
                                         <i class="fas fa-trash mr-1"></i> Hapus
                                     </button>
                                 </form>

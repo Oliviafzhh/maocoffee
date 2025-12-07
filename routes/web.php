@@ -8,14 +8,12 @@ use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\ReservasiController;
-
+use App\Http\Controllers\AboutController;
 // Route untuk home page (public)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Route untuk auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
-Route::post('/signup', [AuthController::class, 'processSignup'])->name('signup.process');
 Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -48,6 +46,15 @@ Route::post('/menu/store-simple', [MenuController::class, 'storeSimple'])->name(
 Route::get('/section/menu', [MenuController::class, 'index'])->name('section.menu');
 Route::get('/menu-content', [MenuController::class, 'getMenuContent'])->name('menu.content');
 
+
+// Route untuk About management dashboard
+Route::get('/dashboard/about', [AboutController::class, 'dashboardIndex'])->name('dashboard.about.index');
+Route::get('/dashboard/about/create', [AboutController::class, 'create'])->name('dashboard.about.create');
+Route::post('/dashboard/about', [AboutController::class, 'store'])->name('dashboard.about.store');
+Route::get('/dashboard/about/{id}/edit', [AboutController::class, 'edit'])->name('dashboard.about.edit');
+Route::put('/dashboard/about/{id}', [AboutController::class, 'update'])->name('dashboard.about.update');
+Route::delete('/dashboard/about/{id}', [AboutController::class, 'destroy'])->name('dashboard.about.destroy');
+
 // Route untuk review management dashboard
 Route::get('/dashboard/reviews', [ReviewController::class, 'dashboardIndex'])->name('dashboard.reviews.index');
 Route::get('/dashboard/reviews/create', [ReviewController::class, 'create'])->name('dashboard.reviews.create');
@@ -74,6 +81,9 @@ Route::get('/reservasi', [ReservasiController::class, 'create'])->name('reservas
 Route::post('/reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
 Route::get('/reservasi/success', [ReservasiController::class, 'success'])->name('reservasi.success');
 
-// Route untuk ubah password
-Route::get('/dashboard/ubah-password', [AuthController::class, 'showChangePassword'])->name('dashboard.password.change');
-Route::post('/dashboard/ubah-password', [AuthController::class, 'processChangePassword'])->name('dashboard.password.update');
+
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard/password/change', [AuthController::class, 'showChangePassword'])->name('dashboard.password.change');
+    Route::post('/dashboard/password/update', [AuthController::class, 'processChangePassword'])->name('dashboard.password.update');
+});

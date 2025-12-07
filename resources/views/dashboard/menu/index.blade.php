@@ -2,6 +2,21 @@
 
 @section('page-title', 'Manajemen Menu')
 
+
+@php
+function menuImage($path) {
+    if (!$path) return asset('image/no-image.png');
+
+    // Kalau file ada di storage → pakai storage
+    if (file_exists(public_path('storage/' . $path))) {
+        return asset('storage/' . $path);
+    }
+
+    // Kalau tidak ada → fallback ke public (seeder)
+    return asset($path);
+}
+@endphp
+
 @section('dashboard-content')
 <div class="p-6">
     <div class="bg-white rounded-lg shadow-md p-6">
@@ -11,7 +26,7 @@
                 <h2 class="text-2xl font-semibold text-gray-800">Manajemen Menu</h2>
                 <p class="text-gray-600">Kelola menu makanan, minuman, dan snack</p>
             </div>
-            
+
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 <!-- Filter Kategori -->
                 <select id="filterKategori" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E4239]">
@@ -20,10 +35,10 @@
                     <option value="Drink" {{ $kategori == 'Drink' ? 'selected' : '' }}>Minuman</option>
                     <option value="Snack" {{ $kategori == 'Snack' ? 'selected' : '' }}>Snack</option>
                 </select>
-                
+
                 <!-- Tombol Tambah Menu -->
-                <a href="{{ route('dashboard.menu.create') }}" 
-                   class="bg-[#2E4239] hover:bg-[#1a2a22] text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 whitespace-nowrap">
+                <a href="{{ route('dashboard.menu.create') }}"
+                    class="bg-[#2E4239] hover:bg-[#1a2a22] text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 whitespace-nowrap">
                     <i class="fas fa-plus"></i>
                     Tambah Menu
                 </a>
@@ -31,9 +46,9 @@
         </div>
 
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                {{ session('success') }}
-            </div>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            {{ session('success') }}
+        </div>
         @endif
 
         <!-- Tabel Menu -->
@@ -53,10 +68,10 @@
                     @forelse($menus as $menu)
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-3">
-                            <img src="{{ asset('storage/' . $menu->img_menu) }}" 
-                                 alt="{{ $menu->nama_menu }}" 
-                                 class="w-16 h-16 object-cover rounded-lg">
-                        </td>
+                            <img
+                                src="{{ menuImage($menu->img_menu) }}"
+                                class="w-16 h-16 object-cover rounded-lg">
+                                                </td>
                         <td class="px-4 py-3">
                             <div>
                                 <p class="font-medium text-gray-800">{{ $menu->nama_menu }}</p>
@@ -82,16 +97,16 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
-                                <a href="{{ route('dashboard.menu.edit', $menu->id_menu) }}" 
-                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition duration-200">
+                                <a href="{{ route('dashboard.menu.edit', $menu->id_menu) }}"
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition duration-200">
                                     <i class="fas fa-edit mr-1"></i> Edit
                                 </a>
-                                <form action="{{ route('dashboard.menu.destroy', $menu->id_menu) }}" method="POST" 
-                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">
+                                <form action="{{ route('dashboard.menu.destroy', $menu->id_menu) }}" method="POST"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200">
+                                    <button type="submit"
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200">
                                         <i class="fas fa-trash mr-1"></i> Hapus
                                     </button>
                                 </form>

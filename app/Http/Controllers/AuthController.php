@@ -3,134 +3,76 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Show login form
+    // Show Login
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Show signup form
-    public function showSignup()
-    {
-        return view('auth.signup');
-    }
-
-    // Process signup
-    public function processSignup(Request $request)
-    {
-        // Validasi
-        $request->validate([
-            'username' => 'required|min:3|max:255|unique:user,username',
-            'email' => 'required|email|unique:user,email',
-            'password' => 'required|min:6|max:255'
-        ], [
-            'username.required' => 'Username harus diisi',
-            'username.min' => 'Username minimal 3 karakter',
-            'username.unique' => 'Username sudah digunakan',
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah terdaftar',
-            'password.required' => 'Password harus diisi',
-            'password.min' => 'Password minimal 6 karakter'
-        ]);
-
-        // Create user (password TANPA hashing sesuai permintaan)
-        $user = new User();
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = $request->password; // Password disimpan plain text
-        $user->save();
-
-        // Redirect ke login dengan pesan sukses
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
-    }
-
-    // Process login
+    // Process Login
     public function processLogin(Request $request)
     {
-        // Validasi
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required'
-        ], [
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'password.required' => 'Password harus diisi'
         ]);
 
-        // Cari user by email
-        $user = User::where('email', $request->email)->first();
+        $credentials = $request->only('email', 'password');
 
-        // Check user exists and password match (plain text comparison)
-        if ($user && $user->password === $request->password) {
-            // Simpan session
-            session(['user_id' => $user->id_user, 'username' => $user->username]);
-            
-            // Redirect ke dashboard
+        // LOGIN MENGGUNAKAN GUARD ADMIN
+        if (Auth::guard('admin')->attempt($credentials)) {
+
+            $request->session()->regenerate();
+
             return redirect()->route('dashboard');
         }
 
-        // Jika gagal
         return back()->withErrors([
             'email' => 'Email atau password salah'
         ])->withInput();
     }
 
     // Logout
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget(['user_id', 'username']);
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 
-
+    // Show Change Password
     public function showChangePassword()
     {
         return view('dashboard.password.change');
     }
 
-    /**
-     * Proses ubah password
-     */
+    // Update Password
     public function processChangePassword(Request $request)
     {
-        // Validasi
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:6|max:255|different:current_password',
-            'confirm_password' => 'required|same:new_password'
-        ], [
-            'current_password.required' => 'Password lama harus diisi',
-            'new_password.required' => 'Password baru harus diisi',
-            'new_password.min' => 'Password baru minimal 6 karakter',
-            'new_password.different' => 'Password baru harus berbeda dengan password lama',
-            'confirm_password.required' => 'Konfirmasi password harus diisi',
-            'confirm_password.same' => 'Konfirmasi password harus sama dengan password baru'
+            'new_password'     => 'required|min:6',
+            'confirm_password' => 'required|same:new_password',
         ]);
 
-        // Ambil user dari session
-        $userId = session('user_id');
-        $user = User::find($userId);
+        $user = Auth::guard('admin')->user();
 
-        if (!$user) {
-            return back()->withErrors(['current_password' => 'User tidak ditemukan']);
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password lama salah']);
         }
 
-        // Cek password lama (karena kita simpan plain text)
-        if ($user->password !== $request->current_password) {
-            return back()->withErrors(['current_password' => 'Password lama tidak sesuai']);
-        }
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
 
-        // Update password (tetap plain text sesuai permintaan sebelumnya)
-        $user->password = $request->new_password;
-        $user->save();
-
-        return redirect()->route('dashboard.password.change')
-            ->with('success', 'Password berhasil diubah!');
+        return back()->with('success', 'Password berhasil diubah!');
     }
 }

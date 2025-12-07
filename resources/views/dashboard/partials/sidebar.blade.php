@@ -1,19 +1,19 @@
 <aside class="w-64 bg-[#2E4239] text-white min-h-screen flex flex-col shadow-2xl relative z-30">
-    
+
     <div class="p-6">
         <img src="{{ asset('image/LOGO WHITE.png') }}" alt="MaoPlace Logo" class="w-auto h-auto">
     </div>
-    
+
     <nav class="flex-1 px-4 space-y-6 overflow-y-auto custom-scrollbar mt-2">
-        
+
         <div>
             <p class="px-4 text-[10px] font-extrabold text-[#D4B3AA] tracking-[0.2em] uppercase mb-2 opacity-80">
                 Main Menu
             </p>
             <ul class="space-y-1">
                 <li>
-                    <a href="{{ route('dashboard') }}" 
-                       class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group">
+                    <a href="{{ route('dashboard') }}"
+                        class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group">
                         <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-[#D4B3AA] group-hover:bg-[#D4B3AA] group-hover:text-[#2E4239] transition-colors duration-300 mr-3 shadow-sm">
                             <i class="fas fa-home text-xs"></i>
                         </span>
@@ -32,7 +32,7 @@
                             </div>
                             <i class="fas fa-chevron-right text-[10px] opacity-60 transition-transform duration-300 group-open:rotate-90"></i>
                         </summary>
-                        
+
                         <ul class="mt-2 ml-4 border-l border-white/10 space-y-1 pl-3">
                             <li>
                                 <a href="{{ route('dashboard.menu.index') }}?kategori=Food" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-[#D4B3AA] hover:translate-x-1 transition-all duration-300 rounded-lg">
@@ -63,13 +63,24 @@
                 Management
             </p>
             <ul class="space-y-1">
+
                 <li>
-                    <a href="{{ route('dashboard.paket.index') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group"> 
+                    <a href="{{ route('dashboard.about.index') }}"
+                        class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group">
+                        <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-[#D4B3AA] group-hover:bg-[#D4B3AA] group-hover:text-[#2E4239] transition-colors duration-300 mr-3 shadow-sm">
+                            <i class="fas fa-image text-xs"></i>
+                        </span>
+                        <span class="font-medium text-sm tracking-wide">About</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('dashboard.paket.index') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300 group">
                         <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-[#D4B3AA] group-hover:bg-[#D4B3AA] group-hover:text-[#2E4239] transition-colors duration-300 mr-3 shadow-sm">
                             <i class="fas fa-box text-xs"></i>
                         </span>
                         <span class="font-medium text-sm tracking-wide">Paket</span>
-                    </a> 
+                    </a>
                 </li>
 
                 <li>
