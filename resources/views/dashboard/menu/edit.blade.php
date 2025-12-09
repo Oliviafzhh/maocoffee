@@ -3,22 +3,19 @@
 @section('page-title', 'Edit Menu')
 
 @php
-function menuImage($path) {
-    if (!$path) return asset('image/no-image.png');
-
-    // Kalau file ada di storage → pakai storage
-    if (file_exists(public_path('storage/' . $path))) {
-        return asset('storage/' . $path);
+    // Helper function untuk handling gambar
+    function menuImage($path) {
+        if (!$path) return asset('image/no-image.png');
+        if (file_exists(public_path('storage/' . $path))) {
+            return asset('storage/' . $path);
+        }
+        return asset($path);
     }
-
-    // Kalau tidak ada → fallback ke public (seeder)
-    return asset($path);
-}
 @endphp
 
 @section('dashboard-content')
 <div class="p-8 bg-gray-50 min-h-screen">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
 
         <!-- Header Page -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-200 pb-6">
@@ -52,7 +49,7 @@ function menuImage($path) {
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div class="p-6 md:p-8 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
                     <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                        Informasi Menu
+                        <i class="fas fa-edit text-[#2E4239]"></i> Informasi Menu
                     </h3>
                     <span class="text-xs text-gray-400 font-medium">* Wajib diisi</span>
                 </div>
@@ -88,10 +85,9 @@ function menuImage($path) {
 
                     <!-- Row 2: Harga & Stok -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Harga (Diperbaiki agar Rp tidak menutupi input) -->
+                        <!-- Harga -->
                         <div class="space-y-2">
                             <label class="block text-sm font-semibold text-gray-700">Harga <span class="text-red-500">*</span></label>
-                            <!-- Menggunakan flex container agar "Rp" dan Input berdampingan rapi -->
                             <div class="flex items-center bg-gray-50/50 border border-gray-200 rounded-xl overflow-hidden shadow-sm focus-within:shadow-md focus-within:ring-2 focus-within:ring-[#2E4239]/20 focus-within:border-[#2E4239] transition-all group">
                                 <div class="px-4 py-3.5 bg-gray-100 border-r border-gray-200 text-gray-500 font-bold text-sm group-focus-within:bg-[#2E4239] group-focus-within:text-white group-focus-within:border-[#2E4239] transition-all">
                                     Rp
@@ -119,74 +115,75 @@ function menuImage($path) {
                             placeholder="Jelaskan detail rasa, bahan utama, atau keunikan menu ini..." required>{{ old('deskripsi_menu', $menu->deskripsi_menu) }}</textarea>
                     </div>
 
-                    <!-- Row 4: Gambar (Stacked Layout - Atas Bawah) -->
-                    <div class="space-y-8 pt-4 border-t border-gray-100">
-                        <!-- 1. Preview Gambar Lama (Besar) -->
-                        <div class="space-y-3">
-                            <label class="block text-base font-bold text-gray-800 flex items-center gap-2">
-                                <i class="fas fa-image text-[#2E4239]"></i> Gambar Saat Ini
-                            </label>
-                            <!-- Container Besar -->
-                            <div class="w-full h-96 bg-gray-50 border-2 border-gray-200 rounded-2xl flex items-center justify-center overflow-hidden p-4 shadow-sm relative group">
-                                <img
-                                    src="{{ menuImage($menu->img_menu) }}"
-                                    class="w-16 h-16 object-cover rounded-lg">
-
-                                <div class="absolute inset-0 bg-black/5 rounded-2xl pointer-events-none border border-black/5"></div>
+                    <!-- Row 4: Gambar (Updated Layout: Side by Side) -->
+                    <div class="pt-6 border-t border-gray-100">
+                        <label class="block text-base font-bold text-gray-800 mb-4">Pengaturan Gambar</label>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Kolom Kiri: Gambar Saat Ini -->
+                            <div class="bg-gray-50 rounded-2xl p-4 border border-gray-200">
+                                <div class="mb-3 text-sm font-semibold text-gray-500 flex justify-between">
+                                    <span>Gambar Saat Ini</span>
+                                    @if($menu->img_menu)
+                                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">File Custom</span>
+                                    @else
+                                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full border border-yellow-200">Default</span>
+                                    @endif
+                                </div>
+                                
+                                <div class="aspect-video w-full rounded-xl overflow-hidden border-2 border-white shadow-md relative group">
+                                    <img src="{{ menuImage($menu->img_menu) }}" 
+                                         alt="{{ $menu->nama_menu }}" 
+                                         class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="mt-3 text-xs text-gray-400 text-center">
+                                    {{ $menu->nama_menu }}
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- 2. Area Upload Gambar Baru (Di Bawahnya) -->
-                        <div class="space-y-3">
-                            <label class="block text-base font-bold text-gray-800 flex items-center gap-2">
-                                <i class="fas fa-cloud-upload-alt text-[#2E4239]"></i> Ganti Gambar (Opsional)
-                            </label>
-
-                            <div class="relative group">
-                                <!-- Area Upload -->
-                                <label for="img_menu" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-[#2E4239]/30 rounded-2xl cursor-pointer bg-[#2E4239]/5 hover:bg-[#2E4239]/10 transition-all duration-300 relative overflow-hidden group-hover:border-[#2E4239]/60">
-
-                                    <!-- Placeholder Content -->
+                            <!-- Kolom Kanan: Upload Gambar Baru -->
+                            <div class="flex flex-col h-full">
+                                <label for="img_menu" class="flex-1 flex flex-col items-center justify-center w-full min-h-[200px] border-2 border-dashed border-[#2E4239]/30 rounded-2xl cursor-pointer bg-[#2E4239]/5 hover:bg-[#2E4239]/10 transition-all duration-300 relative overflow-hidden group">
+                                    
                                     <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center z-10 transition-opacity duration-300" id="upload-placeholder">
-                                        <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform duration-300">
-                                            <i class="fas fa-camera text-3xl text-[#2E4239]"></i>
+                                        <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                            <i class="fas fa-cloud-upload-alt text-2xl text-[#2E4239]"></i>
                                         </div>
-                                        <p class="text-base text-[#2E4239] font-bold mb-1">Klik untuk ganti foto baru</p>
-                                        <p class="text-sm text-gray-500">atau drag file ke area ini</p>
-                                        <span class="mt-3 px-3 py-1 bg-white text-xs text-gray-500 rounded-full border border-gray-200 font-medium">JPG, PNG, GIF (Max. 2MB)</span>
+                                        <p class="text-sm font-bold text-[#2E4239] mb-1">Ganti Gambar Menu</p>
+                                        <p class="text-xs text-gray-500">Klik atau drag file ke sini</p>
+                                        <span class="mt-3 px-3 py-1 bg-white text-[10px] text-gray-400 rounded-full border border-gray-200">JPG, PNG, GIF (Max. 2MB)</span>
                                     </div>
 
-                                    <!-- File Info Overlay (Hidden by Default) -->
+                                    <!-- Preview Filename Overlay -->
                                     <div id="file-info" class="hidden absolute inset-0 bg-white/95 flex flex-col items-center justify-center z-20 backdrop-blur-sm">
-                                        <div class="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mb-3 shadow-md animate-bounce-short border border-green-100">
-                                            <i class="fas fa-check text-3xl text-green-600"></i>
+                                        <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mb-2 shadow-sm animate-bounce-short border border-green-100">
+                                            <i class="fas fa-check text-xl text-green-600"></i>
                                         </div>
-                                        <p class="text-base font-bold text-gray-800 mb-1 px-4 text-center break-all" id="file-name">filename.jpg</p>
-                                        <p class="text-xs text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full mt-2">Klik area untuk mengganti lagi</p>
+                                        <p class="text-sm font-bold text-gray-800 px-4 text-center truncate w-full" id="file-name">filename.jpg</p>
+                                        <p class="text-xs text-green-600 mt-1">Siap diupload!</p>
                                     </div>
 
-                                    <!-- Input File Asli (Hidden) -->
                                     <input id="img_menu" name="img_menu" type="file" class="hidden" accept="image/*" />
                                 </label>
                             </div>
+
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- Action Buttons (Besar dan Mantap) -->
+            <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row justify-end gap-4 pt-4 border-t border-gray-200">
-                <!-- Tombol Kembali -->
                 <a href="{{ route('dashboard.menu.index') }}"
                     class="inline-flex justify-center items-center px-8 py-4 border border-gray-300 shadow-sm text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all w-full sm:w-auto hover:shadow-md">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
                 </a>
 
-                <!-- TOMBOL UPDATE: Diperbesar & Bayangan Mewah -->
                 <button type="submit"
                     class="inline-flex justify-center items-center px-12 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-[#2E4239] hover:bg-[#1a2a22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E4239] transition-all transform hover:-translate-y-1 w-full sm:w-auto shadow-[0_10px_20px_-10px_rgba(46,66,57,0.6)] hover:shadow-[0_20px_30px_-5px_rgba(46,66,57,0.5)]">
-                    <i class="fas fa-save mr-2"></i> Update Menu
+                    <i class="fas fa-save mr-2"></i> Simpan Perubahan
                 </button>
             </div>
 
@@ -194,7 +191,6 @@ function menuImage($path) {
     </div>
 </div>
 
-<!-- Script Sederhana untuk Menampilkan Nama File saat Dipilih -->
 <script>
     const fileInput = document.getElementById('img_menu');
     const fileInfo = document.getElementById('file-info');
@@ -206,7 +202,7 @@ function menuImage($path) {
         if (fileName) {
             fileNameDisplay.textContent = fileName;
             fileInfo.classList.remove('hidden');
-            uploadPlaceholder.classList.add('opacity-0'); // Hide placeholder smoothly
+            uploadPlaceholder.classList.add('opacity-0');
         } else {
             fileInfo.classList.add('hidden');
             uploadPlaceholder.classList.remove('opacity-0');
@@ -216,17 +212,9 @@ function menuImage($path) {
 
 <style>
     @keyframes bounce-short {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
     }
-
     .animate-bounce-short {
         animation: bounce-short 0.5s ease-in-out 1;
     }

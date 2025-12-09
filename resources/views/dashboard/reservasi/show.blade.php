@@ -3,136 +3,194 @@
 @section('page-title', 'Detail Reservasi')
 
 @section('dashboard-content')
-<div class="p-6">
-    <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
-        <!-- Header dengan Tombol Kembali -->
-        <div class="flex justify-between items-center mb-6">
-            <a href="{{ route('dashboard.reservasi.index') }}" 
-               class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </a>
-            <h2 class="text-2xl font-semibold text-gray-800">Detail Reservasi #{{ $reservasi->id_reservasi }}</h2>
+<div class="min-h-screen bg-gray-50/50 p-6 font-sans">
+    <div class="mx-auto max-w-6xl">
+        
+        <!-- Navigation & Title -->
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex items-center gap-4">
+                <!-- Tombol Kembali Hijau Tua -->
+                <a href="{{ route('dashboard.reservasi.index') }}" 
+                   class="group flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-900 shadow-md shadow-emerald-100 transition-all hover:bg-emerald-200 hover:shadow-lg hover:-translate-y-0.5">
+                    <i class="fas fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
+                </a>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900">Reservasi #{{ $reservasi->id_reservasi }}</h1>
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <i class="far fa-calendar"></i>
+                        <span>{{ \Carbon\Carbon::parse($reservasi->created_at)->format('d F Y, H:i') }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                 <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset
+                    {{ $reservasi->status == 'terverifikasi' ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' : '' }}
+                    {{ $reservasi->status == 'belum_verifikasi' ? 'bg-yellow-50 text-yellow-700 ring-yellow-600/20' : '' }}
+                    {{ $reservasi->status == 'ditolak' ? 'bg-red-50 text-red-700 ring-red-600/20' : '' }}">
+                    <span class="mr-1.5 h-1.5 w-1.5 rounded-full 
+                        {{ $reservasi->status == 'terverifikasi' ? 'bg-emerald-600' : '' }}
+                        {{ $reservasi->status == 'belum_verifikasi' ? 'bg-yellow-600' : '' }}
+                        {{ $reservasi->status == 'ditolak' ? 'bg-red-600' : '' }}"></span>
+                    {{ $reservasi->status_label }}
+                </span>
+            </div>
         </div>
 
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                {{ session('success') }}
+            <div class="mb-6 flex items-center gap-3 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-emerald-900 shadow-sm">
+                <i class="fas fa-check-circle text-lg text-emerald-600"></i>
+                <p class="font-medium">{{ session('success') }}</p>
             </div>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Informasi Reservasi -->
-            <div class="space-y-6">
-                <div class="border-b border-gray-200 pb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pelanggan</h3>
-                    
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Nama:</span>
-                            <span class="font-medium text-gray-800">{{ $reservasi->nama_reservasi }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">No HP:</span>
-                            <span class="font-medium text-gray-800">{{ $reservasi->no_hp }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Tanggal:</span>
-                            <span class="font-medium text-gray-800">{{ \Carbon\Carbon::parse($reservasi->tgl_reservasi)->format('d F Y') }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Jam:</span>
-                            <span class="font-medium text-gray-800">{{ $reservasi->jam_reservasi }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Detail Paket -->
-                <div class="border-b border-gray-200 pb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Detail Pesanan</h3>
-                    
-                    <div class="space-y-3">
-                        @foreach($reservasi->pakets as $paket)
-                        <div class="bg-gray-50 rounded-lg p-3">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="font-medium text-gray-800">{{ $paket->nama_paket }}</span>
-                                <span class="text-sm text-gray-600">x{{ $paket->pivot->jumlah }}</span>
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            
+            <!-- Left Column: Main Details (2/3) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Main Info Card -->
+                <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                    <!-- Customer Details Header -->
+                    <div class="border-b border-gray-100 bg-gray-50/50 p-6">
+                        <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-900 mb-4">Informasi Pelanggan</h2>
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            <div>
+                                <p class="text-xs text-gray-500">Nama Pemesan</p>
+                                <p class="mt-1 font-medium text-gray-900">{{ $reservasi->nama_reservasi }}</p>
                             </div>
-                            <p class="text-sm text-gray-600">{{ $paket->deeskripsi_menu }}</p>
-                            <p class="text-sm font-medium text-gray-800 mt-1">{{ $paket->harga_formatted }}</p>
+                            <div>
+                                <p class="text-xs text-gray-500">Nomor WhatsApp</p>
+                                <p class="mt-1 font-mono font-medium text-gray-900">{{ $reservasi->no_hp }}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Tanggal Reservasi</p>
+                                <div class="mt-1 flex items-center gap-2 font-medium text-gray-900">
+                                    <i class="far fa-calendar-alt text-gray-400"></i>
+                                    {{ \Carbon\Carbon::parse($reservasi->tgl_reservasi)->format('d F Y') }}
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Waktu</p>
+                                <div class="mt-1 flex items-center gap-2 font-medium text-gray-900">
+                                    <i class="far fa-clock text-gray-400"></i>
+                                    {{ $reservasi->jam_reservasi }}
+                                </div>
+                            </div>
                         </div>
-                        @endforeach
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="p-6">
+                        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900">Rincian Pesanan</h2>
+                        <div class="divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white">
+                            @foreach($reservasi->pakets as $paket)
+                            <div class="flex items-start justify-between p-4 transition hover:bg-gray-50">
+                                <div class="flex gap-4">
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
+                                        <i class="fas fa-utensils text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-medium text-gray-900">{{ $paket->nama_paket }}</span>
+                                            <span class="rounded bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700">x{{ $paket->pivot->jumlah }}</span>
+                                        </div>
+                                        <p class="mt-1 text-sm leading-relaxed text-gray-500">{{ $paket->deeskripsi_menu }}</p>
+                                    </div>
+                                </div>
+                                <div class="whitespace-nowrap font-medium text-gray-900">
+                                    {{ $paket->harga_formatted }}
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Footer / Total -->
+                    <div class="bg-gray-50 p-6">
+                        <div class="flex flex-col items-end gap-1">
+                            <span class="text-sm text-gray-500">Total Pembayaran</span>
+                            <span class="text-3xl font-bold tracking-tight text-gray-900">{{ $reservasi->total_formatted }}</span>
+                            <span class="text-xs text-gray-400">Termasuk pajak & layanan</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Catatan -->
+                <!-- Notes Section -->
                 @if($reservasi->catatan)
-                <div class="border-b border-gray-200 pb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Catatan</h3>
-                    <p class="text-gray-600 bg-gray-50 rounded-lg p-3">{{ $reservasi->catatan }}</p>
+                <div class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                    <div class="flex gap-3">
+                        <i class="fas fa-sticky-note mt-0.5 text-amber-400"></i>
+                        <div>
+                            <h3 class="text-sm font-medium text-amber-900">Catatan Tambahan</h3>
+                            <p class="mt-1 text-sm text-amber-800">{{ $reservasi->catatan }}</p>
+                        </div>
+                    </div>
                 </div>
                 @endif
-
-                <!-- Total -->
-                <div>
-                    <div class="flex justify-between items-center bg-[#2E4239] text-white rounded-lg p-4">
-                        <span class="text-lg font-semibold">Total</span>
-                        <span class="text-xl font-bold">{{ $reservasi->total_formatted }}</span>
-                    </div>
-                </div>
             </div>
 
-            <!-- Bukti Pembayaran & Status -->
+            <!-- Right Column: Sidebar (1/3) -->
             <div class="space-y-6">
-                <!-- Status Reservasi -->
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Status Reservasi</h3>
+                
+                <!-- Status Actions -->
+                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900">Tindakan</h3>
                     
-                    <div class="text-center mb-4">
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-lg font-medium 
-                            {{ $reservasi->status == 'terverifikasi' ? 'bg-green-100 text-green-800' : '' }}
-                            {{ $reservasi->status == 'belum_verifikasi' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                            {{ $reservasi->status == 'ditolak' ? 'bg-red-100 text-red-800' : '' }}">
-                            {{ $reservasi->status_label }}
-                        </span>
-                    </div>
-
-                    <!-- Form Update Status -->
                     @if($reservasi->status == 'belum_verifikasi')
-                    <form action="{{ route('dashboard.reservasi.updateStatus', $reservasi->id_reservasi) }}" method="POST" class="space-y-3">
-                        @csrf
-                        <div class="flex gap-2">
+                        <form action="{{ route('dashboard.reservasi.updateStatus', $reservasi->id_reservasi) }}" method="POST" class="flex gap-3">
+                            @csrf
                             <button type="submit" name="status" value="terverifikasi" 
-                                    class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center gap-2">
+                                    class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition duration-200 font-medium">
                                 <i class="fas fa-check"></i>
                                 Terima
                             </button>
+                            
                             <button type="submit" name="status" value="ditolak" 
-                                    class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center gap-2">
+                                    class="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg transition duration-200 font-medium">
                                 <i class="fas fa-times"></i>
                                 Tolak
                             </button>
+                        </form>
+                        <p class="mt-3 text-xs text-center text-gray-500">
+                            Pastikan bukti pembayaran valid.
+                        </p>
+                    @else
+                        <div class="flex flex-col items-center justify-center py-6 text-center">
+                            <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full 
+                                {{ $reservasi->status == 'terverifikasi' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600' }}">
+                                <i class="fas {{ $reservasi->status == 'terverifikasi' ? 'fa-check' : 'fa-times' }} text-lg"></i>
+                            </div>
+                            <p class="font-medium text-gray-900">Reservasi {{ $reservasi->status_label }}</p>
+                            <p class="text-sm text-gray-500">Status telah diperbarui oleh admin.</p>
                         </div>
-                    </form>
                     @endif
                 </div>
 
-                <!-- Bukti Pembayaran -->
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Bukti Pembayaran</h3>
+                <!-- Proof of Payment -->
+                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Bukti Transfer</h3>
+                        <a href="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" target="_blank" class="text-xs font-medium text-blue-600 hover:underline">
+                            Download
+                        </a>
+                    </div>
                     
-                    <div class="text-center">
-                        <img src="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" 
-                             alt="Bukti Pembayaran" 
-                             class="max-w-full h-64 object-contain mx-auto rounded-lg border border-gray-200">
-                        
-                        <a href="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" 
-                           target="_blank" 
-                           class="inline-block mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200">
-                            <i class="fas fa-expand mr-2"></i>Lihat Full Size
+                    <div class="group relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                        <div class="aspect-[4/3] w-full">
+                            <img src="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" 
+                                 alt="Bukti Transfer" 
+                                 class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105">
+                        </div>
+                        <a href="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" target="_blank" 
+                           class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                            <div class="rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm border border-white/30">
+                                <i class="fas fa-search-plus mr-2"></i> Lihat Penuh
+                            </div>
                         </a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
