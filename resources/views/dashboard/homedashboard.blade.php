@@ -7,12 +7,10 @@ use Illuminate\Support\Str;
 function fileUrl2($path) {
 if (!$path) return '';
 
-// Jika file upload user → storage/app/public/konfigurasi/*
         if (Str::startsWith($path, 'konfigurasi/')) {
         return asset('storage/' . $path);
         }
 
-// Jika file dari seeder → public/image/konfigurasi_web/*
         return asset($path);
         }
 @endphp

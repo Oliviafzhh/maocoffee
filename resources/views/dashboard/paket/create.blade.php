@@ -73,7 +73,6 @@
                         <!-- Deskripsi Menu -->
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Deskripsi Isi Menu <span class="text-red-500">*</span></label>
-                            <!-- Note: Typo 'deeskripsi_menu' dipertahankan sesuai kode asli user -->
                             <textarea name="deeskripsi_menu" rows="5"
                                       class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1A2E25] focus:border-transparent transition text-gray-900 placeholder-gray-400"
                                       placeholder="Jelaskan apa saja isi paket ini..." required>{{ old('deeskripsi_menu') }}</textarea>
@@ -95,7 +94,6 @@
                     <h3 class="text-lg font-bold text-[#1A2E25] mb-4">Gambar Paket</h3>
                     
                     <!-- Preview Area -->
-                    <!-- aspect-square membuat kotak selalu persegi -->
                     <div class="relative w-full aspect-square bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden cursor-pointer hover:border-[#1A2E25] transition group" id="uploadArea">
                         
                         <!-- Placeholder -->
@@ -108,7 +106,6 @@
                         </div>
 
                         <!-- Image Preview -->
-                        <!-- PERUBAHAN: object-cover diganti object-contain agar gambar full/tidak terpotong -->
                         <img id="imagePreview" src="" class="absolute inset-0 w-full h-full object-contain hidden p-2">
 
                         <!-- Input File Hidden -->
@@ -146,7 +143,7 @@
             reader.onload = function(e) {
                 imagePreview.src = e.target.result;
                 imagePreview.classList.remove('hidden');
-                placeholder.classList.add('opacity-0'); // Sembunyikan placeholder
+                placeholder.classList.add('opacity-0'); 
             }
             reader.readAsDataURL(file);
         }

@@ -9,7 +9,6 @@
         <!-- Navigation & Title -->
         <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex items-center gap-4">
-                <!-- Tombol Kembali Hijau Tua -->
                 <a href="{{ route('dashboard.reservasi.index') }}" 
                    class="group flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-900 shadow-md shadow-emerald-100 transition-all hover:bg-emerald-200 hover:shadow-lg hover:-translate-y-0.5">
                     <i class="fas fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
@@ -167,7 +166,6 @@
                     @endif
                 </div>
 
-                <!-- Proof of Payment -->
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <div class="mb-4 flex items-center justify-between">
                         <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Bukti Transfer</h3>

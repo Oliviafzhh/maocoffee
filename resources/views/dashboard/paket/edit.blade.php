@@ -85,7 +85,6 @@
                     <!-- Row 2: Deskripsi -->
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-gray-700">Deskripsi Menu <span class="text-red-500">*</span></label>
-                        <!-- Typo 'deeskripsi_menu' dipertahankan sesuai kode asli user -->
                         <textarea name="deeskripsi_menu" rows="4"
                             class="w-full px-4 py-3.5 bg-gray-50/50 border border-gray-200 rounded-xl text-gray-800 shadow-sm focus:shadow-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4239]/20 focus:border-[#2E4239] transition-all resize-none placeholder-gray-400"
                             placeholder="Jelaskan apa saja isi paket ini..." required>{{ old('deeskripsi_menu', $paket->deeskripsi_menu) }}</textarea>
@@ -136,7 +135,7 @@
                                         <span class="px-3 py-1 bg-white text-[10px] text-gray-400 rounded-full border border-gray-200 shadow-sm">JPG, PNG (Max. 2MB)</span>
                                     </div>
 
-                                    <!-- Success State (Akan muncul via JS saat file dipilih) -->
+                                    <!-- Success State -->
                                     <div id="file-info" class="hidden absolute inset-0 bg-white/95 flex flex-col items-center justify-center z-20 backdrop-blur-sm p-6 text-center">
                                         <div class="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center mb-3 shadow-sm animate-bounce-short border border-green-100">
                                             <i class="fas fa-check text-xl text-green-600"></i>

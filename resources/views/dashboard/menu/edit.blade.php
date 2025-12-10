@@ -3,7 +3,6 @@
 @section('page-title', 'Edit Menu')
 
 @php
-    // Helper function untuk handling gambar
     function menuImage($path) {
         if (!$path) return asset('image/no-image.png');
         if (file_exists(public_path('storage/' . $path))) {

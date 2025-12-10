@@ -7,12 +7,10 @@
 function menuImage($path) {
     if (!$path) return asset('image/no-image.png');
 
-    // Kalau file ada di storage → pakai storage
     if (file_exists(public_path('storage/' . $path))) {
         return asset('storage/' . $path);
     }
 
-    // Kalau tidak ada → fallback ke public (seeder)
     return asset($path);
 }
 @endphp
@@ -128,6 +126,7 @@ function menuImage($path) {
 </div>
 
 <script>
+    
     // Filter kategori
     document.getElementById('filterKategori').addEventListener('change', function() {
         const kategori = this.value;

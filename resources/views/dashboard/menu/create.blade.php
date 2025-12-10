@@ -111,7 +111,7 @@
                         <label class="block text-sm font-semibold text-gray-700">Foto Menu <span class="text-red-500">*</span></label>
                         
                         <div class="relative group">
-                            <!-- Area Drag & Drop Visual: Dipercantik dengan border warna tema yang halus -->
+                            <!-- Area Drag & Drop Visual -->
                             <label for="img_menu" class="flex flex-col items-center justify-center w-full h-60 border-2 border-dashed border-[#2E4239]/30 rounded-2xl cursor-pointer bg-[#2E4239]/5 hover:bg-[#2E4239]/10 transition-all duration-300 relative overflow-hidden group-hover:border-[#2E4239]/60">
                                 
                                 <!-- Placeholder Content -->

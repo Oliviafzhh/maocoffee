@@ -48,7 +48,7 @@
                         <td class="px-4 py-4 align-top">
                             <a href="{{ route('dashboard.reviews.show', $review->id_review) }}">
                                 @if($review->profil_review)
-                                    <!-- Ubah rounded-full jadi rounded-lg -->
+                                    <!-- Ubah roundedg -->
                                     <img src="{{ asset('storage/' . $review->profil_review) }}" 
                                          alt="{{ $review->nama_review }}" 
                                          class="w-16 h-12 object-cover rounded-lg border border-gray-200 shadow-sm hover:scale-110 transition">

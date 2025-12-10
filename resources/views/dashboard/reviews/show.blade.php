@@ -3,8 +3,6 @@
 @section('page-title', 'Detail Review')
 
 @section('dashboard-content')
-<div class="p-6"> <!-- Saya kembalikan padding ke p-6 agar lebih lega -->
-    
 
     <a href="{{ route('dashboard.reviews.index') }}" 
        class="inline-flex items-center gap-2 text-gray-600 hover:text-[#1A2E25] bg-white border border-gray-200 hover:border-[#1A2E25] px-8 py-3 rounded-xl transition-all duration-200 text-base font-bold shadow-sm hover:shadow-md mb-10">
