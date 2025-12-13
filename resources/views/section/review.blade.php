@@ -1,4 +1,4 @@
-<section class="flex flex-col justify-center items-center gap-2.5 w-full h-[832px] py-[66px] px-[52px] flex-shrink-0">
+<section class="scroll-mt-[120px] flex flex-col justify-center items-center gap-2.5 w-full h-[832px] py-[66px] px-[52px] flex-shrink-0" id="review" class="review-section">
     <div class="flex flex-col justify-between items-center flex-1 self-stretch">
         <div class="flex flex-col items-center gap-4 w-[899.747px]">
             <div class="text-[#004642] text-center text-[56px] font-bold leading-[120%] self-stretch">Here what they say</div>

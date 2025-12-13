@@ -5,29 +5,38 @@
 @section('dashboard-content')
 
 <div class="min-h-screen flex flex-col items-center justify-center px-4">
-
-
     <!-- Container Utama -->
     <div class="max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mx-auto md:mx-0">
         <div class="grid grid-cols-1 md:grid-cols-12 min-h-[300px]">
 
-            <!-- KOLOM KIRI: Foto Menu & Info Pelanggan -->
+            <!-- KOLOM KIRI: Foto Makanan & Info Pelanggan -->
             <div class="md:col-span-5 bg-[#1A2E25] p-6 text-white flex flex-col items-center text-center relative justify-center">
 
                 <!-- Label -->
-                <span class="text-[10px] font-bold text-green-200 uppercase tracking-wider mb-3">Foto Menu</span>
+                <span class="text-[10px] font-bold text-green-200 uppercase tracking-wider mb-3">
+                    {{ $review->makanan_img ? 'Foto Makanan' : 'Foto Profil' }}
+                </span>
 
-                <!-- FOTO MENU (Kotak) -->
+                <!-- FOTO MAKANAN (Prioritas) -->
                 <div class="w-44 h-44 mb-4 relative shadow-2xl transform hover:scale-105 transition duration-500">
-                    @if($review->profil_review)
-                    <!-- Tampilkan Foto Menu -->
+                    @if($review->makanan_img) <!-- GANTI: profil_review → makanan_img -->
+                    <!-- Tampilkan Foto Makanan -->
+                    <img src="{{ asset('storage/' . $review->makanan_img) }}"
+                        alt="Foto Makanan"
+                        class="w-full h-full object-contain bg-gray-900/20 p-2 rounded-xl border-4 border-white/20">
+                    @elseif($review->profil_review) <!-- Fallback ke foto profil -->
+                    <!-- Tampilkan Foto Profil -->
                     <img src="{{ asset('storage/' . $review->profil_review) }}"
                         alt="{{ $review->nama_review }}"
                         class="w-full h-full object-cover rounded-xl border-4 border-white/20">
                     @else
-                    <!-- Placeholder Utensils jika tidak ada foto -->
+                    <!-- Placeholder berdasarkan tipe -->
                     <div class="w-full h-full bg-white/10 rounded-xl flex items-center justify-center text-white/50 text-4xl border-4 border-white/20">
-                        <i class="fas fa-utensils"></i>
+                        @if($review->makanan_img)
+                            <i class="fas fa-hamburger"></i>
+                        @else
+                            <i class="fas fa-user-circle"></i>
+                        @endif
                     </div>
                     @endif
                 </div>
@@ -39,6 +48,16 @@
                     <i class="far fa-calendar-alt text-green-300"></i>
                     <span>{{ $review->created_at ? $review->created_at->format('d M Y • H:i') : 'Baru saja' }}</span>
                 </div>
+
+                <!-- Info tambahan: Tampilkan jika ada foto profil -->
+                @if($review->profil_review && $review->makanan_img)
+                <div class="mt-4 pt-4 border-t border-white/10">
+                    <p class="text-xs text-green-200">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Juga upload foto profil
+                    </p>
+                </div>
+                @endif
             </div>
 
             <!-- KOLOM KANAN: Isi Review -->
@@ -85,17 +104,34 @@
                     </div>
                 </div>
 
+                <!-- Foto Profil (jika ada dan berbeda dengan makanan_img) -->
+                @if($review->profil_review && $review->profil_review != $review->makanan_img)
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">Foto Profil Pelanggan</label>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
+                            <img src="{{ asset('storage/' . $review->profil_review) }}" 
+                                 alt="{{ $review->nama_review }}"
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Foto profil {{ $review->nama_review }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
             </div>
         </div>
     </div>
-    <div class="w-full max-w-2xl flex justify-start">
+    
+    <!-- Tombol Kembali -->
+    <div class="w-full max-w-2xl flex justify-start mt-6">
         <a href="{{ route('dashboard.reviews.index') }}"
             class="inline-flex items-center gap-2 text-gray-600 hover:text-[#1A2E25] bg-white border border-gray-200 hover:border-[#1A2E25] px-8 py-3 rounded-xl transition-all duration-200 text-base font-bold shadow-sm hover:shadow-md">
-            <i class="fas fa-arrow-left text-[#1A2E25]"></i> Kembali
+            <i class="fas fa-arrow-left text-[#1A2E25]"></i> Kembali ke Daftar
         </a>
     </div>
 </div>
 
-</div>
 @endsection

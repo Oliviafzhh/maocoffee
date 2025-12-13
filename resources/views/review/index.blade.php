@@ -104,20 +104,20 @@
                     </div>
 
                     <!-- Foto Review (Jika Ada) -->
-                    @if($review->profil_review)
-                    <div class="mt-auto pt-4 border-t border-gray-50">
-                        <div class="h-48 rounded-xl overflow-hidden bg-gray-50 relative cursor-pointer" onclick="openModal('{{ asset('storage/' . $review->profil_review) }}')">
-                            <!-- UBAH DI SINI: object-cover menjadi object-contain -->
-                            <img src="{{ asset('storage/' . $review->profil_review) }}" 
-                                 alt="Foto Review" 
-                                 class="w-full h-full object-contain bg-gray-100 transition duration-500 group-hover:scale-105">
-                            
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                <i class="fas fa-search-plus text-white text-2xl drop-shadow-md"></i>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
+                    <!-- Foto Review (Jika Ada Foto MAKANAN) -->
+@if($review->makanan_img)
+<div class="mt-auto pt-4 border-t border-gray-50">
+    <div class="h-48 rounded-xl overflow-hidden bg-gray-50 relative cursor-pointer" onclick="openModal('{{ asset('storage/' . $review->makanan_img) }}')">
+        <img src="{{ asset('storage/' . $review->makanan_img) }}" 
+             alt="Foto Makanan" 
+             class="w-full h-full object-contain bg-gray-100 transition duration-500 group-hover:scale-105">
+        
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
+            <i class="fas fa-search-plus text-white text-2xl drop-shadow-md"></i>
+        </div>
+    </div>
+</div>
+@endif
 
                 </div>
                 @endforeach

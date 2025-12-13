@@ -106,53 +106,67 @@
                 </div>
 
                 <!-- === KOLOM KANAN: UPLOAD FOTO & SUBMIT === -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-24">
-                        <h2 class="text-xl font-bold text-[#1A2E25] mb-6 flex items-center gap-2">
-                            <i class="fas fa-camera"></i> Foto Makanan
-                        </h2>
+                <!-- === KOLOM KANAN: UPLOAD FOTO & SUBMIT === -->
+<div class="lg:col-span-1">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-24">
+        <h2 class="text-xl font-bold text-[#1A2E25] mb-6 flex items-center gap-2">
+            <i class="fas fa-camera"></i> Foto Makanan
+        </h2>
 
-                        <!-- UPLOAD FOTO -->
-                        <div class="mb-6 space-y-3">
-                            <label class="text-sm font-bold text-gray-700">Upload Foto (Opsional)</label>
-                            
-                            <!-- Area Preview -->
-                            <div class="w-full h-48 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
-                                
-                                <!-- Pesan Kosong -->
-                                <div id="placeholderState" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
-                                    <i class="fas fa-utensils text-3xl mb-2 group-hover:scale-110 transition"></i>
-                                    <span class="text-xs text-center px-4">Klik untuk upload foto menu</span>
-                                </div>
-                                
-                                <!-- Gambar Preview (UBAH DI SINI) -->
-                                <!-- Ubah 'object-cover' menjadi 'object-contain' -->
-                                <img id="imagePreview" src="" class="hidden w-full h-full object-contain absolute inset-0 pointer-events-none transition-opacity duration-300">
-                                
-                                <!-- Input File -->
-                                <input type="file" name="profil_review" id="fotoInput" accept="image/*"
-                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                            </div>
-                            <p class="text-[10px] text-gray-400 text-center">Format: jpg, png, jpeg | Max: 2MB</p>
-                        </div>
-
-                        <!-- Info Box -->
-                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
-                                <p class="text-xs text-blue-700 leading-relaxed">
-                                    Foto makanan yang menarik akan membantu pelanggan lain memilih menu!
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Tombol Kirim -->
-                        <button type="submit" class="w-full bg-[#1A2E25] text-white py-4 rounded-xl font-bold shadow-lg shadow-green-900/10 hover:bg-[#14241d] hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
-                            <i class="fas fa-paper-plane"></i>
-                            Kirim Ulasan
-                        </button>
-                    </div>
+        <!-- UPLOAD FOTO PROFIL -->
+        <div class="mb-6 space-y-3">
+            <label class="text-sm font-bold text-gray-700">Foto Profil Anda (Opsional)</label>
+            
+            <div class="w-full h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
+                
+                <div id="profilPlaceholder" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
+                    <i class="fas fa-user-circle text-2xl mb-2 group-hover:scale-110 transition"></i>
+                    <span class="text-xs text-center px-4">Foto profil Anda</span>
                 </div>
+                
+                <img id="profilPreview" src="" class="hidden w-full h-full object-cover absolute inset-0 pointer-events-none transition-opacity duration-300">
+                
+                <input type="file" name="profil_review" id="profilInput" accept="image/*"
+                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+            </div>
+        </div>
+
+        <!-- UPLOAD FOTO MAKANAN -->
+        <div class="mb-6 space-y-3">
+            <label class="text-sm font-bold text-gray-700">Foto Makanan (Opsional)</label>
+            
+            <div class="w-full h-48 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
+                
+                <div id="makananPlaceholder" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
+                    <i class="fas fa-utensils text-3xl mb-2 group-hover:scale-110 transition"></i>
+                    <span class="text-xs text-center px-4">Klik untuk upload foto menu</span>
+                </div>
+                
+                <img id="makananPreview" src="" class="hidden w-full h-full object-contain absolute inset-0 pointer-events-none transition-opacity duration-300">
+                
+                <input type="file" name="makanan_img" id="makananInput" accept="image/*"
+                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+            </div>
+            <p class="text-[10px] text-gray-400 text-center">Format: jpg, png, jpeg | Max: 2MB</p>
+        </div>
+
+        <!-- Info Box -->
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                <p class="text-xs text-blue-700 leading-relaxed">
+                    Foto makanan yang menarik akan membantu pelanggan lain memilih menu!
+                </p>
+            </div>
+        </div>
+
+        <!-- Tombol Kirim -->
+        <button type="submit" class="w-full bg-[#1A2E25] text-white py-4 rounded-xl font-bold shadow-lg shadow-green-900/10 hover:bg-[#14241d] hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+            <i class="fas fa-paper-plane"></i>
+            Kirim Ulasan
+        </button>
+    </div>
+</div>
 
             </div>
         </form>
@@ -219,6 +233,42 @@
                 reader.readAsDataURL(file);
             }
         });
+
+        // 3. Logic Preview Foto Profil
+const profilInput = document.getElementById('profilInput');
+const profilPreview = document.getElementById('profilPreview');
+const profilPlaceholder = document.getElementById('profilPlaceholder');
+
+profilInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            profilPreview.src = e.target.result;
+            profilPreview.classList.remove('hidden');
+            profilPlaceholder.classList.add('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// 4. Logic Preview Foto Makanan
+const makananInput = document.getElementById('makananInput');
+const makananPreview = document.getElementById('makananPreview');
+const makananPlaceholder = document.getElementById('makananPlaceholder');
+
+makananInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            makananPreview.src = e.target.result;
+            makananPreview.classList.remove('hidden');
+            makananPlaceholder.classList.add('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+});
     </script>
 </body>
 </html>

@@ -32,8 +32,9 @@
             <table class="w-full table-auto">
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-200">
-                        <!-- UBAH DI SINI: Foto Profil jadi Foto Menu -->
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Foto Menu</th>
+                        <!-- Foto Makanan -->
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Foto Makanan</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Foto Profil</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Nama & Tanggal</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Rating</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Deskripsi</th>
@@ -44,18 +45,33 @@
                     @forelse($reviews as $review)
                     <tr class="hover:bg-gray-50 transition">
                         
-                        <!-- Foto Menu (Bentuk Kotak rounded-lg) -->
+                        <!-- Foto Makanan -->
+                        <td class="px-4 py-4 align-top">
+                            <a href="{{ route('dashboard.reviews.show', $review->id_review) }}">
+                                @if($review->makanan_img)
+                                    <img src="{{ asset('storage/' . $review->makanan_img) }}" 
+                                         alt="Foto Makanan" 
+                                         class="w-16 h-12 object-cover rounded-lg border border-gray-200 shadow-sm hover:scale-110 transition">
+                                @else
+                                    <!-- Placeholder jika tidak ada foto makanan -->
+                                    <div class="w-16 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-lg hover:bg-gray-200 transition border border-gray-200">
+                                        <i class="fas fa-hamburger"></i>
+                                    </div>
+                                @endif
+                            </a>
+                        </td>
+
+                        <!-- Foto Profil -->
                         <td class="px-4 py-4 align-top">
                             <a href="{{ route('dashboard.reviews.show', $review->id_review) }}">
                                 @if($review->profil_review)
-                                    <!-- Ubah roundedg -->
                                     <img src="{{ asset('storage/' . $review->profil_review) }}" 
-                                         alt="{{ $review->nama_review }}" 
+                                         alt="Foto Profil" 
                                          class="w-16 h-12 object-cover rounded-lg border border-gray-200 shadow-sm hover:scale-110 transition">
                                 @else
-                                    <!-- Placeholder Kotak -->
+                                    <!-- Placeholder jika tidak ada foto profil -->
                                     <div class="w-16 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-lg hover:bg-gray-200 transition border border-gray-200">
-                                        <i class="fas fa-utensils"></i>
+                                        <i class="fas fa-user"></i>
                                     </div>
                                 @endif
                             </a>
@@ -91,7 +107,7 @@
                         <td class="px-4 py-4 align-top text-center">
                             <div class="flex items-center justify-center gap-2">
                                 
-                                <!-- 1. Tombol LIHAT (Biru Solid) -->
+                                <!-- 1. Tombol LIHAT -->
                                 <a href="{{ route('dashboard.reviews.show', $review->id_review) }}" 
                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
                                    title="Lihat Detail">
@@ -99,7 +115,7 @@
                                     <span>Lihat</span>
                                 </a>
 
-                                <!-- 2. Tombol HAPUS (Merah Solid) -->
+                                <!-- 2. Tombol HAPUS -->
                                 <form action="{{ route('dashboard.reviews.destroy', $review->id_review) }}" method="POST" 
                                       onsubmit="return confirm('Yakin ingin menghapus ulasan dari {{ $review->nama_review }}? Data tidak bisa dikembalikan.')">
                                     @csrf
@@ -117,7 +133,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-12 text-center text-gray-400">
+                        <td colspan="6" class="px-4 py-12 text-center text-gray-400">
                             <div class="flex flex-col items-center justify-center">
                                 <i class="fas fa-inbox text-5xl mb-3 opacity-30"></i>
                                 <p class="text-lg font-medium">Belum ada ulasan masuk</p>

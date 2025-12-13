@@ -23,7 +23,8 @@ class ReviewController extends Controller
             'nama_review'      => 'required|string|max:255',
             'bintang'          => 'required|integer|min:1|max:5',
             'deskripsi_review' => 'required|string',
-            'profil_review'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'profil_review'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Foto profil
+            'makanan_img'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Foto makanan (BARU)
         ]);
 
         $data = [
@@ -32,9 +33,16 @@ class ReviewController extends Controller
             'deskripsi_review' => $request->deskripsi_review,
         ];
 
+        // Upload foto profil (jika ada)
         if ($request->hasFile('profil_review')) {
-            $path = $request->file('profil_review')->store('reviews', 'public');
+            $path = $request->file('profil_review')->store('reviews/profil', 'public');
             $data['profil_review'] = $path;
+        }
+
+        // Upload foto makanan (BARU)
+        if ($request->hasFile('makanan_img')) {
+            $path = $request->file('makanan_img')->store('reviews/makanan', 'public');
+            $data['makanan_img'] = $path;
         }
 
         Review::create($data);
@@ -59,7 +67,6 @@ class ReviewController extends Controller
         return view('dashboard.reviews.index', compact('reviews'));
     }
 
-    // --- TAMBAHAN BARU UNTUK DETAIL REVIEW ---
     public function show($id)
     {
         $review = Review::findOrFail($id);
@@ -70,9 +77,17 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
         
+        // Hapus foto profil jika ada
         if ($review->profil_review) {
             if (Storage::disk('public')->exists($review->profil_review)) {
                 Storage::disk('public')->delete($review->profil_review);
+            }
+        }
+        
+        // Hapus foto makanan jika ada (BARU)
+        if ($review->makanan_img) {
+            if (Storage::disk('public')->exists($review->makanan_img)) {
+                Storage::disk('public')->delete($review->makanan_img);
             }
         }
         

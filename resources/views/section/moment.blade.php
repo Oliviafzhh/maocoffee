@@ -1,4 +1,4 @@
-<section class="flex w-full min-h-screen p-20 flex-col items-start gap-8">
+<section class="scroll-mt-[120px] flex w-full min-h-screen p-20 flex-col items-start gap-8" id="about" class="moment-section">
 
     <!-- HEADER -->
     <div class="flex w-full justify-between items-start">

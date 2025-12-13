@@ -23,5 +23,6 @@ class Review extends Model
         'nama_review',
         'bintang',
         'deskripsi_review',
+        'makanan_img',
     ];
 }
