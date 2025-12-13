@@ -9,23 +9,32 @@ class AboutSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('about')->truncate(); //
-        DB::table('about')->insert([
+        DB::table('abouts')->truncate(); //
+        DB::table('abouts')->insert([
+        
             [
-                'img_about' => 'image/about/moment1.png',
+                'small_title' => 'Our Story',
+                'title' => 'Handcrafted Coffee',
+                'description' => 'Kami menyajikan kopi pilihan dengan cita rasa terbaik.',
+                'image' => 'image/moment/moment1.png',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
-                'img_about' => 'image/about/moment2.png',
+                'small_title' => 'Our Space',
+                'title' => 'Comfort Place',
+                'description' => 'Tempat nyaman untuk bekerja dan bersantai.',
+                'image' => 'image/moment/momoment2.png',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
-                'img_about' => 'image/about/moment3.png',
+                'small_title' => 'Our Beans',
+                'title' => 'Selected Beans',
+                'description' => 'Biji kopi terbaik dari petani lokal.',
+                'image' => 'image/moment/moment3.png',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
         ]);
-    }
-}
+    }}

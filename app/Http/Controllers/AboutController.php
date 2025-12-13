@@ -8,108 +8,98 @@ use Illuminate\Support\Facades\Storage;
 
 class AboutController extends Controller
 {
-    /**
-     * Menampilkan data About ke halaman frontend (home)
-     */
+    // ================= FRONTEND =================
     public function index()
     {
-        $about = About::first();
-        return view('section.about', compact('about'));
+        // Ambil semua About, urut berdasarkan id
+        $abouts = About::orderBy('id', 'asc')->get();
+        return view('section.about', compact('abouts'));
     }
 
-    /**
-     * Menampilkan gambar About di dashboard
-     */
+    // ================= DASHBOARD =================
     public function dashboardIndex()
     {
-        $about = About::all();
-        return view('dashboard.about.index', compact('about'));
+        // Ambil semua About untuk dashboard
+        $abouts = About::orderBy('id', 'asc')->get();
+        return view('dashboard.about.index', compact('abouts'));
     }
 
-    /**
-     * Form tambah gambar About
-     */
     public function create()
     {
         return view('dashboard.about.create');
     }
 
-    /**
-     * Simpan gambar About
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'img_about' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'small_title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string',
+            'image'       => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // Upload file
-        $path = $request->file('img_about')->store('about', 'public');
+        $imagePath = $request->file('image')->store('abouts', 'public');
 
         About::create([
-            'img_about' => $path
+            'small_title' => $request->small_title,
+            'title'       => $request->title,
+            'description' => $request->description,
+            'image'       => $imagePath,
         ]);
 
-        return redirect()
-            ->route('dashboard.about.index')
-            ->with('success', 'Gambar About berhasil ditambahkan');
+        return redirect()->route('dashboard.about.index')
+            ->with('success', 'About berhasil ditambahkan');
     }
 
-    /**
-     * Form edit
-     */
     public function edit($id)
     {
         $about = About::findOrFail($id);
         return view('dashboard.about.edit', compact('about'));
     }
 
-    /**
-     * Update gambar
-     */
     public function update(Request $request, $id)
     {
         $about = About::findOrFail($id);
 
         $request->validate([
-            'img_about' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'small_title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $path = $about->img_about;
+        $imagePath = $about->image;
 
-        // Jika upload baru
-        if ($request->hasFile('img_about')) {
-            // hapus file lama
-            if ($path && Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->delete($path);
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
             }
-
-            // upload baru
-            $path = $request->file('img_about')->store('about', 'public');
+            $imagePath = $request->file('image')->store('abouts', 'public');
         }
 
-        $about->update(['img_about' => $path]);
+        $about->update([
+            'small_title' => $request->small_title,
+            'title'       => $request->title,
+            'description' => $request->description,
+            'image'       => $imagePath,
+        ]);
 
-        return redirect()
-            ->route('dashboard.about.index')
-            ->with('success', 'Gambar About berhasil diperbarui');
+        return redirect()->route('dashboard.about.index')
+            ->with('success', 'About berhasil diperbarui');
     }
 
-    /**
-     * Hapus data + gambar
-     */
     public function destroy($id)
     {
         $about = About::findOrFail($id);
 
-        if ($about->img_about && Storage::disk('public')->exists($about->img_about)) {
-            Storage::disk('public')->delete($about->img_about);
+        if ($about->image && Storage::disk('public')->exists($about->image)) {
+            Storage::disk('public')->delete($about->image);
         }
 
         $about->delete();
 
-        return redirect()
-            ->route('dashboard.about.index')
-            ->with('success', 'Gambar About berhasil dihapus');
+        return redirect()->route('dashboard.about.index')
+            ->with('success', 'About berhasil dihapus');
     }
 }

@@ -5,10 +5,16 @@
 @php
 function aboutImage($path) {
 if (!$path) return asset('image/no-image.png');
+
 if (file_exists(public_path('storage/' . $path))) {
 return asset('storage/' . $path);
 }
+
+if (file_exists(public_path($path))) {
 return asset($path);
+}
+
+return asset('image/no-image.png');
 }
 @endphp
 
@@ -40,7 +46,7 @@ return asset($path);
         </div>
         @endif
 
-        <form id="aboutForm" action="{{ route('dashboard.about.update', $about->id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+        <form action="{{ route('dashboard.about.update', $about->id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
             @method('PUT')
 
@@ -51,51 +57,51 @@ return asset($path);
 
                 <div class="p-6 md:p-8 space-y-8">
 
-                    <!-- Judul -->
+                    <!-- Small Title -->
                     <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-gray-700">Judul <span class="text-red-500">*</span></label>
-                        <input type="text" name="judul"
-                            value="{{ old('judul', $about->judul) }}"
+                        <label class="block text-sm font-semibold text-gray-700">Small Title <span class="text-red-500">*</span></label>
+                        <input type="text" name="small_title"
+                            value="{{ old('small_title', $about->small_title) }}"
                             class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl"
-                            placeholder="Contoh: Tentang Kami" required>
+                            required>
                     </div>
 
-                    <!-- Subjudul -->
+                    <!-- Title -->
                     <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-gray-700">Subjudul</label>
-                        <input type="text" name="subjudul"
-                            value="{{ old('subjudul', $about->subjudul) }}"
+                        <label class="block text-sm font-semibold text-gray-700">Title <span class="text-red-500">*</span></label>
+                        <input type="text" name="title"
+                            value="{{ old('title', $about->title) }}"
                             class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl"
-                            placeholder="Contoh: Kami hadir untuk memberikan pengalaman terbaik...">
+                            required>
                     </div>
 
-                    <!-- Deskripsi -->
+                    <!-- Description -->
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-gray-700">Deskripsi <span class="text-red-500">*</span></label>
-                        <textarea name="deskripsi" rows="4"
+                        <textarea name="description" rows="4"
                             class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl resize-none"
-                            placeholder="Tuliskan informasi tentang perusahaan atau brand..."
-                            required>{{ old('deskripsi', $about->deskripsi) }}</textarea>
+                            required>{{ old('description', $about->description) }}</textarea>
                     </div>
 
+                    
                     <!-- Gambar -->
                     <div class="space-y-8 pt-4 border-t border-gray-100">
 
                         <div>
                             <label class="block text-base font-bold text-gray-800 mb-2">Gambar Saat Ini</label>
                             <div class="w-full h-96 bg-gray-50 border rounded-2xl flex items-center justify-center overflow-hidden">
-                                <img src="{{ aboutImage($about->img_about) }}" class="object-cover w-full h-full">
+                                <img src="{{ aboutImage($about->image) }}" class="object-cover w-full h-full">
                             </div>
                         </div>
 
                         <div class="space-y-2">
                             <label class="block text-base font-bold text-gray-800">Ganti Gambar (Opsional)</label>
-                            <input type="file" name="img_about"
+                            <input type="file" name="image"
                                 class="w-full border border-gray-300 rounded-xl p-3 bg-white"
                                 accept="image/*">
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
 

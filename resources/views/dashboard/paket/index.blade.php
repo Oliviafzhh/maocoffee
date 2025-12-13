@@ -7,15 +7,15 @@ use Illuminate\Support\Str;
 
 // Helper sederhana untuk gambar
 function menuImage($path) {
-    if (!$path) {
-        return asset('image/no-image.png');
-    }
+if (!$path) {
+return asset('image/no-image.png');
+}
 
-    if (Str::startsWith($path, 'paket/') || Str::startsWith($path, 'menu/')) { 
-         return asset('storage/' . $path);
-    }
+if (Str::startsWith($path, 'paket/') || Str::startsWith($path, 'menu/')) {
+return asset('storage/' . $path);
+}
 
-    return asset('storage/' . $path);
+return asset('storage/' . $path);
 }
 @endphp
 
@@ -53,7 +53,7 @@ function menuImage($path) {
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Nama Paket</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Deskripsi Menu</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Harga</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 w-32">Aksi</th>
+                        <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -62,52 +62,62 @@ function menuImage($path) {
                         <!-- Kolom Gambar -->
                         <td class="px-4 py-3 align-top">
                             @if($paket->image_paket)
-                                <img src="{{ asset('storage/' . $paket->image_paket) }}" 
-                                     alt="{{ $paket->nama_paket }}" 
-                                     class="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-200">
+                            <img src="{{ asset('storage/' . $paket->image_paket) }}"
+                                alt="{{ $paket->nama_paket }}"
+                                class="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-200">
                             @else
-                                <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
-                                    <i class="fas fa-box text-xl"></i>
-                                </div>
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                                <i class="fas fa-box text-xl"></i>
+                            </div>
                             @endif
                         </td>
-                        
+
                         <td class="px-4 py-3 align-top">
                             <span class="text-sm text-gray-600 font-mono">#{{ $paket->id_paket }}</span>
                         </td>
-                        
+
                         <td class="px-4 py-3 align-top">
                             <p class="font-bold text-gray-800 text-sm">{{ $paket->nama_paket }}</p>
                         </td>
-                        
+
                         <td class="px-4 py-3 align-top">
                             <p class="text-xs text-gray-500 line-clamp-2 max-w-sm leading-relaxed">{{ $paket->deeskripsi_menu }}</p>
                         </td>
-                        
+
                         <!-- Kolom Harga (Warna Hijau) -->
                         <td class="px-4 py-3 align-top whitespace-nowrap">
                             <span class="bg-green-100 text-green-800 px-2.5 py-1 rounded-md text-xs font-bold border border-green-200">
                                 Rp {{ number_format($paket->harga_paket, 0, ',', '.') }}
                             </span>
                         </td>
-                        
-                        <td class="px-4 py-3 align-top">
-                            <div class="flex gap-2">
+
+                        <td class="px-4 py-4 align-top text-center">
+                            <div class="flex items-center justify-center gap-2">
+
+                                <!-- TOMBOL EDIT (BIRU SOLID) -->
                                 <a href="{{ route('dashboard.paket.edit', $paket->id_paket) }}"
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-medium transition duration-200 flex items-center gap-1">
-                                    <i class="fas fa-edit"></i> Edit
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
+                                    title="Edit Paket">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Edit</span>
                                 </a>
+
+                                <!-- TOMBOL HAPUS (MERAH SOLID) -->
                                 <form action="{{ route('dashboard.paket.destroy', $paket->id_paket) }}" method="POST"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus paket ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-medium transition duration-200 flex items-center gap-1">
-                                        <i class="fas fa-trash"></i> Hapus
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
+                                        title="Hapus Paket">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span>Hapus</span>
                                     </button>
                                 </form>
+
                             </div>
                         </td>
+
                     </tr>
                     @empty
                     <tr>

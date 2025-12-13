@@ -5,13 +5,13 @@
 
 @php
 function menuImage($path) {
-    if (!$path) return asset('image/no-image.png');
+if (!$path) return asset('image/no-image.png');
 
-    if (file_exists(public_path('storage/' . $path))) {
-        return asset('storage/' . $path);
-    }
+if (file_exists(public_path('storage/' . $path))) {
+return asset('storage/' . $path);
+}
 
-    return asset($path);
+return asset($path);
 }
 @endphp
 
@@ -59,7 +59,7 @@ function menuImage($path) {
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Kategori</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Harga</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Stok</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Aksi</th>
+                        <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -69,7 +69,7 @@ function menuImage($path) {
                             <img
                                 src="{{ menuImage($menu->img_menu) }}"
                                 class="w-16 h-16 object-cover rounded-lg">
-                                                </td>
+                        </td>
                         <td class="px-4 py-3">
                             <div>
                                 <p class="font-medium text-gray-800">{{ $menu->nama_menu }}</p>
@@ -93,23 +93,33 @@ function menuImage($path) {
                                 {{ $menu->stok }} pcs
                             </span>
                         </td>
-                        <td class="px-4 py-3">
-                            <div class="flex gap-2">
+                        <td class="px-4 py-4 align-top text-center">
+                            <div class="flex items-center justify-center gap-2">
+
+                                <!-- TOMBOL EDIT (BIRU SOLID) -->
                                 <a href="{{ route('dashboard.menu.edit', $menu->id_menu) }}"
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition duration-200">
-                                    <i class="fas fa-edit mr-1"></i> Edit
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
+                                    title="Edit Menu">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Edit</span>
                                 </a>
+
+                                <!-- TOMBOL HAPUS (MERAH SOLID) -->
                                 <form action="{{ route('dashboard.menu.destroy', $menu->id_menu) }}" method="POST"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200">
-                                        <i class="fas fa-trash mr-1"></i> Hapus
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
+                                        title="Hapus Menu">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span>Hapus</span>
                                     </button>
                                 </form>
+
                             </div>
                         </td>
+
                     </tr>
                     @empty
                     <tr>
@@ -126,7 +136,6 @@ function menuImage($path) {
 </div>
 
 <script>
-    
     // Filter kategori
     document.getElementById('filterKategori').addEventListener('change', function() {
         const kategori = this.value;
