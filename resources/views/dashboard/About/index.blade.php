@@ -30,12 +30,6 @@ return asset('image/no-image.png');
                 <h2 class="text-2xl font-semibold text-gray-800">Manajemen About</h2>
                 <p class="text-gray-600">Kelola konten About</p>
             </div>
-
-            <a href="{{ route('dashboard.about.create') }}"
-                class="bg-[#2E4239] hover:bg-[#1a2a22] text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                <i class="fas fa-plus"></i>
-                Tambah About
-            </a>
         </div>
 
         <!-- Alert -->
