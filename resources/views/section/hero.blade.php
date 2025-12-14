@@ -51,13 +51,6 @@
 </nav>
 
             </div>
-            <div class="flex items-center gap-6">
-                <div class="flex py-3 px-6 justify-center items-center gap-24 rounded-[20px] border border-white">
-                    <input type="text" placeholder="Search" class="text-[#f7f7f7] text-[0.9rem] bg-transparent border-none outline-none">
-                    <i class="fas fa-search pointer-events-none"></i>
-                </div>
-
-            </div>
         </header>
 
         <div class="flex flex-col justify-center pl-[50px] pb-[50px] relative overflow-hidden flex-grow min-h-[80vh]">

@@ -1,5 +1,5 @@
 <section class="relative bg-cover bg-center bg-no-repeat flex justify-center items-center shrink-0 w-full" 
-         style="background-image: url('{{ asset('image/bgmoment.png') }}'); height: 832px; gap: 10px;">
+         style="background-image: url('{{ asset('image/bgMomen.png') }}'); height: 832px; gap: 10px;">
     <!-- Overlay 20% -->
     <div class="absolute inset-0 bg-black/20"></div>
     <div class="relative z-10">
