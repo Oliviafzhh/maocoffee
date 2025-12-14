@@ -170,7 +170,7 @@
                     <div class="mb-4 flex items-center justify-between">
                         <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Bukti Transfer</h3>
                         <a href="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" target="_blank" class="text-xs font-medium text-blue-600 hover:underline">
-                            Download
+                            Detail
                         </a>
                     </div>
                     

@@ -31,11 +31,7 @@ return asset('image/no-image.png');
                 <p class="text-gray-600">Kelola konten About</p>
             </div>
 
-            <a href="{{ route('dashboard.about.create') }}"
-                class="bg-[#2E4239] hover:bg-[#1a2a22] text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                <i class="fas fa-plus"></i>
-                Tambah About
-            </a>
+            
         </div>
 
         <!-- Alert -->
@@ -90,18 +86,6 @@ return asset('image/no-image.png');
                                     <span>Edit</span>
                                 </a>
 
-                                <!-- TOMBOL HAPUS (MERAH) -->
-                                <form action="{{ route('dashboard.about.destroy', $item->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data About ini? Data tidak bisa dikembalikan.')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
-                                        title="Hapus About">
-                                        <i class="fas fa-trash-alt"></i>
-                                        <span>Hapus</span>
-                                    </button>
-                                </form>
 
                             </div>
                         </td>
