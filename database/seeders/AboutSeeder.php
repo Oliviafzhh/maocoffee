@@ -24,7 +24,7 @@ class AboutSeeder extends Seeder
                 'small_title' => 'Our Space',
                 'title' => 'Comfort Place',
                 'description' => 'Tempat nyaman untuk bekerja dan bersantai.',
-                'image' => 'image/moment/momoment2.png',
+                'image' => 'image/moment/moment2.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

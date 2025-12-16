@@ -3,15 +3,23 @@
 @section('page-title', 'Manajemen About')
 
 @php
+/**
+* Cara ambil gambar seperti menu:
+* - Cek storage (upload)
+* - Cek public (seeder)
+* - Fallback no-image
+*/
 function aboutImage($path) {
-if (!$path) return asset('image/no-image.png');
+if (!$path) {
+return asset('image/no-image.png');
+}
 
-// Jika gambar dari storage (upload)
+// Jika gambar hasil upload (storage/app/public)
 if (file_exists(public_path('storage/' . $path))) {
 return asset('storage/' . $path);
 }
 
-// Jika gambar dari public (seeder)
+// Jika gambar dari seeder (public/image/...)
 if (file_exists(public_path($path))) {
 return asset($path);
 }
@@ -55,9 +63,11 @@ return asset('image/no-image.png');
                     @forelse($abouts as $item)
                     <tr class="hover:bg-gray-50">
 
-                        <!-- Image -->
+                        <!-- IMAGE (BAGIAN YANG DIPERBAIKI) -->
                         <td class="px-4 py-3">
-                            <img src="{{ aboutImage($item->image) }}"
+                            <img
+                                src="{{ aboutImage($item->image) }}"
+                                alt="{{ $item->title }}"
                                 class="w-32 h-20 object-cover rounded-lg">
                         </td>
 
@@ -75,19 +85,14 @@ return asset('image/no-image.png');
                         <!-- Action -->
                         <td class="px-4 py-4 align-top text-center">
                             <div class="flex items-center justify-center gap-2">
-
-                                <!-- TOMBOL EDIT (BIRU) -->
                                 <a href="{{ route('dashboard.about.edit', $item->id) }}"
                                     class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg transition duration-200 text-sm font-medium flex items-center gap-1 shadow-sm"
                                     title="Edit About">
                                     <i class="fas fa-edit"></i>
                                     <span>Edit</span>
                                 </a>
-
-
                             </div>
                         </td>
-
 
                     </tr>
                     @empty

@@ -2,41 +2,49 @@
 
 @section('page-title', 'Detail Review')
 
+@php
+function reviewImage($path) {
+if (!$path) {
+return asset('image/no-image.png');
+}
+
+if (file_exists(public_path('storage/' . $path))) {
+return asset('storage/' . $path);
+}
+
+return asset($path);
+}
+@endphp
+
 @section('dashboard-content')
 
 <div class="min-h-screen flex flex-col items-center justify-center px-4">
-    <!-- Container Utama -->
     <div class="max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mx-auto md:mx-0">
         <div class="grid grid-cols-1 md:grid-cols-12 min-h-[300px]">
 
-            <!-- KOLOM KIRI: Foto Makanan & Info Pelanggan -->
+            <!-- KOLOM KIRI -->
             <div class="md:col-span-5 bg-[#1A2E25] p-6 text-white flex flex-col items-center text-center relative justify-center">
 
-                <!-- Label -->
                 <span class="text-[10px] font-bold text-green-200 uppercase tracking-wider mb-3">
                     {{ $review->makanan_img ? 'Foto Makanan' : 'Foto Profil' }}
                 </span>
 
-                <!-- FOTO MAKANAN (Prioritas) -->
+                <!-- FOTO UTAMA -->
                 <div class="w-44 h-44 mb-4 relative shadow-2xl transform hover:scale-105 transition duration-500">
-                    @if($review->makanan_img) <!-- GANTI: profil_review → makanan_img -->
-                    <!-- Tampilkan Foto Makanan -->
-                    <img src="{{ asset('storage/' . $review->makanan_img) }}"
+                    @if($review->makanan_img)
+                    <!-- FOTO MAKANAN -->
+                    <img src="{{ reviewImage($review->makanan_img) }}"
                         alt="Foto Makanan"
                         class="w-full h-full object-contain bg-gray-900/20 p-2 rounded-xl border-4 border-white/20">
-                    @elseif($review->profil_review) <!-- Fallback ke foto profil -->
-                    <!-- Tampilkan Foto Profil -->
-                    <img src="{{ asset('storage/' . $review->profil_review) }}"
+                    @elseif($review->profil_review)
+                    <!-- FOTO PROFIL -->
+                    <img src="{{ reviewImage($review->profil_review) }}"
                         alt="{{ $review->nama_review }}"
                         class="w-full h-full object-cover rounded-xl border-4 border-white/20">
                     @else
-                    <!-- Placeholder berdasarkan tipe -->
+                    <!-- PLACEHOLDER -->
                     <div class="w-full h-full bg-white/10 rounded-xl flex items-center justify-center text-white/50 text-4xl border-4 border-white/20">
-                        @if($review->makanan_img)
-                            <i class="fas fa-hamburger"></i>
-                        @else
-                            <i class="fas fa-user-circle"></i>
-                        @endif
+                        <i class="fas fa-user-circle"></i>
                     </div>
                     @endif
                 </div>
@@ -49,7 +57,6 @@
                     <span>{{ $review->created_at ? $review->created_at->format('d M Y • H:i') : 'Baru saja' }}</span>
                 </div>
 
-                <!-- Info tambahan: Tampilkan jika ada foto profil -->
                 @if($review->profil_review && $review->makanan_img)
                 <div class="mt-4 pt-4 border-t border-white/10">
                     <p class="text-xs text-green-200">
@@ -60,10 +67,9 @@
                 @endif
             </div>
 
-            <!-- KOLOM KANAN: Isi Review -->
+            <!-- KOLOM KANAN -->
             <div class="md:col-span-7 p-6 flex flex-col bg-white justify-center">
 
-                <!-- Header Kanan: Rating & Hapus -->
                 <div class="flex items-center justify-between mb-4 border-b border-gray-50 pb-4">
                     <div>
                         <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Rating Pelanggan</label>
@@ -73,24 +79,28 @@
                                     <i class="{{ $i <= $review->bintang ? 'fas' : 'far' }} fa-star drop-shadow-sm"></i>
                                     @endfor
                             </div>
-                            <span class="text-sm font-bold text-gray-800 bg-yellow-50 px-2 py-0.5 rounded text-yellow-700 border border-yellow-100">{{ $review->bintang }}.0</span>
+                            <span class="text-sm font-bold text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded border border-yellow-100">
+                                {{ $review->bintang }}.0
+                            </span>
                         </div>
                     </div>
 
-                    <!-- Tombol Hapus -->
                     <form action="{{ route('dashboard.reviews.destroy', $review->id_review) }}" method="POST"
                         onsubmit="return confirm('Hapus review ini?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-semibold flex items-center gap-1.5 transition bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-100 hover:border-red-200">
+                        <button type="submit"
+                            class="text-red-500 hover:text-red-700 text-xs font-semibold flex items-center gap-1.5 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-100">
                             <i class="fas fa-trash-alt"></i> Hapus
                         </button>
                     </form>
                 </div>
 
-                <!-- Review Text -->
+                <!-- ULASAN -->
                 <div class="flex-1">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">Ulasan Masuk</label>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">
+                        Ulasan Masuk
+                    </label>
                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 min-h-[120px] flex items-center shadow-inner">
                         <div class="w-full">
                             <i class="fas fa-quote-left text-gray-300 text-xs mb-1"></i>
@@ -104,19 +114,21 @@
                     </div>
                 </div>
 
-                <!-- Foto Profil (jika ada dan berbeda dengan makanan_img) -->
+                <!-- FOTO PROFIL BAWAH -->
                 @if($review->profil_review && $review->profil_review != $review->makanan_img)
                 <div class="mt-6 pt-6 border-t border-gray-100">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">Foto Profil Pelanggan</label>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">
+                        Foto Profil Pelanggan
+                    </label>
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
-                            <img src="{{ asset('storage/' . $review->profil_review) }}" 
-                                 alt="{{ $review->nama_review }}"
-                                 class="w-full h-full object-cover">
+                            <img src="{{ reviewImage($review->profil_review) }}"
+                                alt="{{ $review->nama_review }}"
+                                class="w-full h-full object-cover">
                         </div>
-                        <div>
-                            <p class="text-xs text-gray-600">Foto profil {{ $review->nama_review }}</p>
-                        </div>
+                        <p class="text-xs text-gray-600">
+                            Foto profil {{ $review->nama_review }}
+                        </p>
                     </div>
                 </div>
                 @endif
@@ -124,11 +136,11 @@
             </div>
         </div>
     </div>
-    
-    <!-- Tombol Kembali -->
+
+    <!-- KEMBALI -->
     <div class="w-full max-w-2xl flex justify-start mt-6">
         <a href="{{ route('dashboard.reviews.index') }}"
-            class="inline-flex items-center gap-2 text-gray-600 hover:text-[#1A2E25] bg-white border border-gray-200 hover:border-[#1A2E25] px-8 py-3 rounded-xl transition-all duration-200 text-base font-bold shadow-sm hover:shadow-md">
+            class="inline-flex items-center gap-2 text-gray-600 hover:text-[#1A2E25] bg-white border border-gray-200 hover:border-[#1A2E25] px-8 py-3 rounded-xl transition text-base font-bold shadow-sm">
             <i class="fas fa-arrow-left text-[#1A2E25]"></i> Kembali ke Daftar
         </a>
     </div>

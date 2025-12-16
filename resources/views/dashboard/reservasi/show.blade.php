@@ -2,15 +2,37 @@
 
 @section('page-title', 'Detail Reservasi')
 
+
+@php
+function buktiImage($path) {
+if (!$path) {
+return asset('image/no-image.png');
+}
+
+// dari upload (storage)
+if (file_exists(public_path('storage/' . $path))) {
+return asset('storage/' . $path);
+}
+
+// dari public (manual / seeder)
+if (file_exists(public_path($path))) {
+return asset($path);
+}
+
+return asset('image/no-image.png');
+}
+@endphp
+
+
 @section('dashboard-content')
 <div class="min-h-screen bg-gray-50/50 p-6 font-sans">
     <div class="mx-auto max-w-6xl">
-        
+
         <!-- Navigation & Title -->
         <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex items-center gap-4">
-                <a href="{{ route('dashboard.reservasi.index') }}" 
-                   class="group flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-900 shadow-md shadow-emerald-100 transition-all hover:bg-emerald-200 hover:shadow-lg hover:-translate-y-0.5">
+                <a href="{{ route('dashboard.reservasi.index') }}"
+                    class="group flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-900 shadow-md shadow-emerald-100 transition-all hover:bg-emerald-200 hover:shadow-lg hover:-translate-y-0.5">
                     <i class="fas fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
                 </a>
                 <div>
@@ -21,9 +43,9 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-3">
-                 <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset
                     {{ $reservasi->status == 'terverifikasi' ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' : '' }}
                     {{ $reservasi->status == 'belum_verifikasi' ? 'bg-yellow-50 text-yellow-700 ring-yellow-600/20' : '' }}
                     {{ $reservasi->status == 'ditolak' ? 'bg-red-50 text-red-700 ring-red-600/20' : '' }}">
@@ -37,17 +59,17 @@
         </div>
 
         @if(session('success'))
-            <div class="mb-6 flex items-center gap-3 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-emerald-900 shadow-sm">
-                <i class="fas fa-check-circle text-lg text-emerald-600"></i>
-                <p class="font-medium">{{ session('success') }}</p>
-            </div>
+        <div class="mb-6 flex items-center gap-3 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-emerald-900 shadow-sm">
+            <i class="fas fa-check-circle text-lg text-emerald-600"></i>
+            <p class="font-medium">{{ session('success') }}</p>
+        </div>
         @endif
 
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            
+
             <!-- Left Column: Main Details (2/3) -->
             <div class="lg:col-span-2 space-y-6">
-                
+
                 <!-- Main Info Card -->
                 <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
                     <!-- Customer Details Header -->
@@ -131,38 +153,38 @@
 
             <!-- Right Column: Sidebar (1/3) -->
             <div class="space-y-6">
-                
+
                 <!-- Status Actions -->
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900">Tindakan</h3>
-                    
+
                     @if($reservasi->status == 'belum_verifikasi')
-                        <form action="{{ route('dashboard.reservasi.updateStatus', $reservasi->id_reservasi) }}" method="POST" class="flex gap-3">
-                            @csrf
-                            <button type="submit" name="status" value="terverifikasi" 
-                                    class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition duration-200 font-medium">
-                                <i class="fas fa-check"></i>
-                                Terima
-                            </button>
-                            
-                            <button type="submit" name="status" value="ditolak" 
-                                    class="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg transition duration-200 font-medium">
-                                <i class="fas fa-times"></i>
-                                Tolak
-                            </button>
-                        </form>
-                        <p class="mt-3 text-xs text-center text-gray-500">
-                            Pastikan bukti pembayaran valid.
-                        </p>
+                    <form action="{{ route('dashboard.reservasi.updateStatus', $reservasi->id_reservasi) }}" method="POST" class="flex gap-3">
+                        @csrf
+                        <button type="submit" name="status" value="terverifikasi"
+                            class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition duration-200 font-medium">
+                            <i class="fas fa-check"></i>
+                            Terima
+                        </button>
+
+                        <button type="submit" name="status" value="ditolak"
+                            class="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg transition duration-200 font-medium">
+                            <i class="fas fa-times"></i>
+                            Tolak
+                        </button>
+                    </form>
+                    <p class="mt-3 text-xs text-center text-gray-500">
+                        Pastikan bukti pembayaran valid.
+                    </p>
                     @else
-                        <div class="flex flex-col items-center justify-center py-6 text-center">
-                            <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full 
+                    <div class="flex flex-col items-center justify-center py-6 text-center">
+                        <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full 
                                 {{ $reservasi->status == 'terverifikasi' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600' }}">
-                                <i class="fas {{ $reservasi->status == 'terverifikasi' ? 'fa-check' : 'fa-times' }} text-lg"></i>
-                            </div>
-                            <p class="font-medium text-gray-900">Reservasi {{ $reservasi->status_label }}</p>
-                            <p class="text-sm text-gray-500">Status telah diperbarui oleh admin.</p>
+                            <i class="fas {{ $reservasi->status == 'terverifikasi' ? 'fa-check' : 'fa-times' }} text-lg"></i>
                         </div>
+                        <p class="font-medium text-gray-900">Reservasi {{ $reservasi->status_label }}</p>
+                        <p class="text-sm text-gray-500">Status telah diperbarui oleh admin.</p>
+                    </div>
                     @endif
                 </div>
 
@@ -173,15 +195,15 @@
                             Detail
                         </a>
                     </div>
-                    
+
                     <div class="group relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
                         <div class="aspect-[4/3] w-full">
-                            <img src="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" 
-                                 alt="Bukti Transfer" 
-                                 class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105">
+                            <img src="{{ buktiImage($reservasi->bukti_pembayaran) }}"
+                                alt="Bukti Transfer"
+                                class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105">
                         </div>
-                        <a href="{{ asset('storage/' . $reservasi->bukti_pembayaran) }}" target="_blank" 
-                           class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        <a href="{{ buktiImage($reservasi->bukti_pembayaran) }}" target="_blank"
+                            class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                             <div class="rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm border border-white/30">
                                 <i class="fas fa-search-plus mr-2"></i> Lihat Penuh
                             </div>

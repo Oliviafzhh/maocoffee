@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('review', function (Blueprint $table) {
             $table->increments('id_review');
+            $table->string('makanan_img');
             $table->string('profil_review');
             $table->string('nama_review');
             $table->tinyInteger('bintang');

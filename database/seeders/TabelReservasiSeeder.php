@@ -19,7 +19,7 @@ class TabelReservasiSeeder extends Seeder
                 'total' => 181000,
                 'catatan' => 'tidak ada',
                 'status' => 'terverifikasi',
-                'bukti_pembayaran' => 'reservasi/bukti/5P4mFuungbqRUQC9XI8BdQsXCsQ5v5z0TTY7LuXD.jpg',
+                'bukti_pembayaran' => 'image/reservasi/bukti.png',
             ],
         ]);
     }

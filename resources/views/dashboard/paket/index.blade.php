@@ -3,21 +3,25 @@
 @section('page-title', 'Manajemen Paket')
 
 @php
-use Illuminate\Support\Str;
-
-// Helper sederhana untuk gambar
-function menuImage($path) {
+function paketImage($path) {
 if (!$path) {
 return asset('image/no-image.png');
 }
 
-if (Str::startsWith($path, 'paket/') || Str::startsWith($path, 'menu/')) {
+// Jika file dari storage (upload)
+if (file_exists(public_path('storage/' . $path))) {
 return asset('storage/' . $path);
 }
 
-return asset('storage/' . $path);
+// Jika file dari public (seeder)
+if (file_exists(public_path($path))) {
+return asset($path);
+}
+
+return asset('image/no-image.png');
 }
 @endphp
+
 
 @section('dashboard-content')
 <div class="p-6">
@@ -62,9 +66,11 @@ return asset('storage/' . $path);
                         <!-- Kolom Gambar -->
                         <td class="px-4 py-3 align-top">
                             @if($paket->image_paket)
-                            <img src="{{ asset('storage/' . $paket->image_paket) }}"
+                            <img
+                                src="{{ paketImage($paket->image_paket) }}"
                                 alt="{{ $paket->nama_paket }}"
                                 class="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-200">
+
                             @else
                             <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
                                 <i class="fas fa-box text-xl"></i>
