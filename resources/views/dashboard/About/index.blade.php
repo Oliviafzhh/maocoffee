@@ -30,11 +30,6 @@ return asset('image/no-image.png');
                 <h2 class="text-2xl font-semibold text-gray-800">Manajemen About</h2>
                 <p class="text-gray-600">Kelola konten About</p>
             </div>
-<<<<<<< HEAD
-
-            
-=======
->>>>>>> 66d0c79ee03a304b505d92a1d7fe41dc17ad8fa5
         </div>
 
         <!-- Alert -->

@@ -25,6 +25,21 @@
             color: #FBBF24; /* Kuning Emas */
             transform: scale(1.2);
         }
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
     </style>
 </head>
 <body class="bg-[#F8F9FA] text-gray-800">
@@ -106,67 +121,81 @@
                 </div>
 
                 <!-- === KOLOM KANAN: UPLOAD FOTO & SUBMIT === -->
-                <!-- === KOLOM KANAN: UPLOAD FOTO & SUBMIT === -->
-<div class="lg:col-span-1">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-24">
-        <h2 class="text-xl font-bold text-[#1A2E25] mb-6 flex items-center gap-2">
-            <i class="fas fa-camera"></i> Foto Makanan
-        </h2>
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-24">
+                        <h2 class="text-xl font-bold text-[#1A2E25] mb-6 flex items-center gap-2">
+                            <i class="fas fa-camera"></i> Foto Makanan
+                        </h2>
 
-        <!-- UPLOAD FOTO PROFIL -->
-        <div class="mb-6 space-y-3">
-            <label class="text-sm font-bold text-gray-700">Foto Profil Anda (Opsional)</label>
-            
-            <div class="w-full h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
-                
-                <div id="profilPlaceholder" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
-                    <i class="fas fa-user-circle text-2xl mb-2 group-hover:scale-110 transition"></i>
-                    <span class="text-xs text-center px-4">Foto profil Anda</span>
+                        <!-- UPLOAD FOTO PROFIL -->
+                        <div class="mb-6 space-y-3">
+                            <label class="text-sm font-bold text-gray-700">Foto Profil Anda (Opsional)</label>
+                            
+                            <div class="w-full h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
+                                
+                                <!-- Placeholder (Default) -->
+                                <div id="profilPlaceholder" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
+                                    <i class="fas fa-user-circle text-2xl mb-2 group-hover:scale-110 transition"></i>
+                                    <span class="text-xs text-center px-4">Klik untuk upload foto profil</span>
+                                </div>
+                                
+                                <!-- Preview Foto Profil -->
+                                <img id="profilPreview" src="" alt="Preview Foto Profil" class="hidden w-full h-full object-cover absolute inset-0 pointer-events-none transition-opacity duration-300">
+                                
+                                <!-- Tombol Hapus Foto Profil -->
+                                <button type="button" id="removeProfilBtn" class="hidden absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center z-20 hover:bg-red-600 transition shadow-md">
+                                    <i class="fas fa-times text-xs"></i>
+                                </button>
+                                
+                                <input type="file" name="profil_review" id="profilInput" accept="image/*"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            </div>
+                            <p class="text-[10px] text-gray-400 text-center">Format: jpg, png, jpeg | Max: 2MB</p>
+                        </div>
+
+                        <!-- UPLOAD FOTO MAKANAN -->
+                        <div class="mb-6 space-y-3">
+                            <label class="text-sm font-bold text-gray-700">Foto Makanan (Opsional)</label>
+                            
+                            <div class="w-full h-48 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
+                                
+                                <!-- Placeholder (Default) -->
+                                <div id="makananPlaceholder" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
+                                    <i class="fas fa-utensils text-3xl mb-2 group-hover:scale-110 transition"></i>
+                                    <span class="text-xs text-center px-4">Klik untuk upload foto menu</span>
+                                </div>
+                                
+                                <!-- Preview Foto Makanan -->
+                                <img id="makananPreview" src="" alt="Preview Foto Makanan" class="hidden w-full h-full object-contain absolute inset-0 pointer-events-none transition-opacity duration-300 bg-white">
+                                
+                                <!-- Tombol Hapus Foto Makanan -->
+                                <button type="button" id="removeMakananBtn" class="hidden absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center z-20 hover:bg-red-600 transition shadow-md">
+                                    <i class="fas fa-times text-xs"></i>
+                                </button>
+                                
+                                <input type="file" name="makanan_img" id="makananInput" accept="image/*"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            </div>
+                            <p class="text-[10px] text-gray-400 text-center">Format: jpg, png, jpeg | Max: 2MB</p>
+                        </div>
+
+                        <!-- Info Box -->
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                                <p class="text-xs text-blue-700 leading-relaxed">
+                                    Foto makanan yang menarik akan membantu pelanggan lain memilih menu!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Kirim -->
+                        <button type="submit" class="w-full bg-[#1A2E25] text-white py-4 rounded-xl font-bold shadow-lg shadow-green-900/10 hover:bg-[#14241d] hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i>
+                            Kirim Ulasan
+                        </button>
+                    </div>
                 </div>
-                
-                <img id="profilPreview" src="" class="hidden w-full h-full object-cover absolute inset-0 pointer-events-none transition-opacity duration-300">
-                
-                <input type="file" name="profil_review" id="profilInput" accept="image/*"
-                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-            </div>
-        </div>
-
-        <!-- UPLOAD FOTO MAKANAN -->
-        <div class="mb-6 space-y-3">
-            <label class="text-sm font-bold text-gray-700">Foto Makanan (Opsional)</label>
-            
-            <div class="w-full h-48 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center overflow-hidden relative group hover:border-[#1A2E25] transition cursor-pointer">
-                
-                <div id="makananPlaceholder" class="flex flex-col items-center text-gray-400 pointer-events-none transition-opacity duration-300">
-                    <i class="fas fa-utensils text-3xl mb-2 group-hover:scale-110 transition"></i>
-                    <span class="text-xs text-center px-4">Klik untuk upload foto menu</span>
-                </div>
-                
-                <img id="makananPreview" src="" class="hidden w-full h-full object-contain absolute inset-0 pointer-events-none transition-opacity duration-300">
-                
-                <input type="file" name="makanan_img" id="makananInput" accept="image/*"
-                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-            </div>
-            <p class="text-[10px] text-gray-400 text-center">Format: jpg, png, jpeg | Max: 2MB</p>
-        </div>
-
-        <!-- Info Box -->
-        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
-            <div class="flex items-start gap-3">
-                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
-                <p class="text-xs text-blue-700 leading-relaxed">
-                    Foto makanan yang menarik akan membantu pelanggan lain memilih menu!
-                </p>
-            </div>
-        </div>
-
-        <!-- Tombol Kirim -->
-        <button type="submit" class="w-full bg-[#1A2E25] text-white py-4 rounded-xl font-bold shadow-lg shadow-green-900/10 hover:bg-[#14241d] hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
-            <i class="fas fa-paper-plane"></i>
-            Kirim Ulasan
-        </button>
-    </div>
-</div>
 
             </div>
         </form>
@@ -216,59 +245,127 @@
             });
         });
 
-        // 2. Logic Preview Foto
-        const fotoInput = document.getElementById('fotoInput');
-        const imagePreview = document.getElementById('imagePreview');
-        const placeholderState = document.getElementById('placeholderState');
+        // 2. Logic Preview Foto Profil
+        const profilInput = document.getElementById('profilInput');
+        const profilPreview = document.getElementById('profilPreview');
+        const profilPlaceholder = document.getElementById('profilPlaceholder');
+        const removeProfilBtn = document.getElementById('removeProfilBtn');
 
-        fotoInput.addEventListener('change', function(e) {
+        profilInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                // Validasi ukuran file (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Ukuran file maksimal 2MB');
+                    this.value = '';
+                    return;
+                }
+                
+                // Validasi tipe file
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Format file harus JPG, PNG, atau GIF');
+                    this.value = '';
+                    return;
+                }
+                
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                    placeholderState.classList.add('hidden');
+                    profilPreview.src = e.target.result;
+                    profilPreview.classList.remove('hidden');
+                    profilPlaceholder.classList.add('hidden');
+                    removeProfilBtn.classList.remove('hidden');
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // 3. Logic Preview Foto Profil
-const profilInput = document.getElementById('profilInput');
-const profilPreview = document.getElementById('profilPreview');
-const profilPlaceholder = document.getElementById('profilPlaceholder');
+        // 3. Logic Preview Foto Makanan
+        const makananInput = document.getElementById('makananInput');
+        const makananPreview = document.getElementById('makananPreview');
+        const makananPlaceholder = document.getElementById('makananPlaceholder');
+        const removeMakananBtn = document.getElementById('removeMakananBtn');
 
-profilInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            profilPreview.src = e.target.result;
-            profilPreview.classList.remove('hidden');
-            profilPlaceholder.classList.add('hidden');
-        }
-        reader.readAsDataURL(file);
-    }
-});
+        makananInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validasi ukuran file (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Ukuran file maksimal 2MB');
+                    this.value = '';
+                    return;
+                }
+                
+                // Validasi tipe file
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Format file harus JPG, PNG, atau GIF');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    makananPreview.src = e.target.result;
+                    makananPreview.classList.remove('hidden');
+                    makananPlaceholder.classList.add('hidden');
+                    removeMakananBtn.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
 
-// 4. Logic Preview Foto Makanan
-const makananInput = document.getElementById('makananInput');
-const makananPreview = document.getElementById('makananPreview');
-const makananPlaceholder = document.getElementById('makananPlaceholder');
+        // 4. Fungsi Hapus Foto Profil
+        removeProfilBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Mencegah event bubbling ke parent
+            profilPreview.src = '';
+            profilPreview.classList.add('hidden');
+            profilPlaceholder.classList.remove('hidden');
+            removeProfilBtn.classList.add('hidden');
+            profilInput.value = '';
+        });
 
-makananInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            makananPreview.src = e.target.result;
-            makananPreview.classList.remove('hidden');
-            makananPlaceholder.classList.add('hidden');
-        }
-        reader.readAsDataURL(file);
-    }
-});
+        // 5. Fungsi Hapus Foto Makanan
+        removeMakananBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Mencegah event bubbling ke parent
+            makananPreview.src = '';
+            makananPreview.classList.add('hidden');
+            makananPlaceholder.classList.remove('hidden');
+            removeMakananBtn.classList.add('hidden');
+            makananInput.value = '';
+        });
+
+        // 6. Form Validation
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            const rating = document.getElementById('ratingInput').value;
+            const nama = document.querySelector('input[name="nama_review"]').value.trim();
+            const deskripsi = document.querySelector('textarea[name="deskripsi_review"]').value.trim();
+            
+            if (!rating) {
+                e.preventDefault();
+                alert('Harap berikan rating terlebih dahulu!');
+                return;
+            }
+            
+            if (!nama) {
+                e.preventDefault();
+                alert('Harap isi nama lengkap Anda!');
+                return;
+            }
+            
+            if (!deskripsi) {
+                e.preventDefault();
+                alert('Harap tulis ulasan Anda!');
+                return;
+            }
+            
+            // Validasi tambahan untuk deskripsi minimal karakter
+            if (deskripsi.length < 10) {
+                e.preventDefault();
+                alert('Ulasan minimal 10 karakter!');
+                return;
+            }
+        });
     </script>
 </body>
 </html>
